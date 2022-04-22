@@ -1,7 +1,7 @@
 import asyncio
 import keyring
 import debugpy
-debugpy.listen(5678)
+debugpy.listen("192.168.1.50",5678)
 
 from .. import fhem
 from .. import generic

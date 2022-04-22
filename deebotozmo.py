@@ -1,5 +1,7 @@
 import asyncio
 import keyring
+import debugpy
+debugpy.listen(5678)
 
 from .. import fhem
 from .. import generic
@@ -91,8 +93,8 @@ class deebotozmo(generic.FhemModule):
         # params['mode'] contains the mode provided by user
         mode = params["mode"]
         await fhem.readingsSingleUpdate(hash, "mode", mode, 1)
-
     async def set_password(self, hash, params):
+
         # user can specify mode as mode=eco or just eco as argument
         # params['mode'] contains the mode provided by user
         password = params["password"]

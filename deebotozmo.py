@@ -1,5 +1,5 @@
 import asyncio
-import keyring
+from cryptography.fernet import Fernet
 import debugpy
 debugpy.listen(("192.168.1.50",5678))
 
@@ -52,6 +52,7 @@ class deebotozmo(generic.FhemModule):
             "off": {},
         }
         self.set_set_config(set_config)
+        self.cipher_suite = Fernet(b'pRmgMa8T0INjEAfksaq2aafzoZXEuwKI7wDe4c1F8AY=')
 
     # FHEM FUNCTION
     async def Define(self, hash, args, argsh):
@@ -100,10 +101,27 @@ class deebotozmo(generic.FhemModule):
         # params['mode'] contains the mode provided by user
         password = params["password"]
         username = params["username"]
-        await keyring.set_password("system", "username", "password")
+        ciphered_text = self.write_password(hash,password) 
+        pw = self.read_password(hash)
         await fhem.readingsSingleUpdate(hash, "username", username, 1)
-        await fhem.readingsSingleUpdate(hash, "password", password, 1)
+        await fhem.readingsSingleUpdate(hash, "password-encrypted", ciphered_text, 1)
+        await fhem.readingsSingleUpdate(hash, "password", pw, 1)
         await fhem.readingsSingleUpdate(hash, "name", hash["NAME"], 1)
+
+    async def write_password(self, hash, password):
+        # no params argument here, as set_off doesn't have arguments defined in set_list_conf
+        ciphered_text = self.cipher_suite.encrypt(password)
+        with open(hash['NAME'] + ".pw", 'wb') as file_object:  file_object.write(ciphered_text)
+        return ciphered_text
+
+    async def read_password(self, hash):
+        # no params argument here, as set_off doesn't have arguments defined in set_list_conf
+        with open(hash['NAME'] + ".pw", 'rb') as file_object:
+            for line in file_object:
+                encryptedpwd = line
+        uncipher_text = (self.cipher_suite.decrypt(encryptedpwd))
+        plain_text_encryptedpassword = bytes(uncipher_text).decode("utf-8") #convert to string
+        return plain_text_encryptedpassword
 
     async def set_desiredTemp(self, hash, params):
         temp = params["temperature"]

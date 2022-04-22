@@ -108,13 +108,13 @@ class deebotozmo(generic.FhemModule):
         await fhem.readingsSingleUpdate(hash, "password", pw, 1)
         await fhem.readingsSingleUpdate(hash, "name", hash["NAME"], 1)
 
-    async def write_password(self, hash, password):
+    def write_password(self, hash, password):
         # no params argument here, as set_off doesn't have arguments defined in set_list_conf
         ciphered_text = self.cipher_suite.encrypt(password)
         with open(hash['NAME'] + ".pw", 'wb') as file_object:  file_object.write(ciphered_text)
         return ciphered_text
 
-    async def read_password(self, hash):
+    def read_password(self, hash):
         # no params argument here, as set_off doesn't have arguments defined in set_list_conf
         with open(hash['NAME'] + ".pw", 'rb') as file_object:
             for line in file_object:

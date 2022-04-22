@@ -1,4 +1,5 @@
 import asyncio
+import uuid
 from cryptography.fernet import Fernet
 import debugpy
 debugpy.listen(("192.168.1.50",5678))
@@ -52,7 +53,7 @@ class deebotozmo(generic.FhemModule):
             "off": {},
         }
         self.set_set_config(set_config)
-        self.cipher_suite = Fernet(b'pRmgMa8T0INjEAfksaq2aafzoZXEuwKI7wDe4c1F8AY=')
+        self.cipher_suite = Fernet(uuid.UUID(int=uuid.getnode()).bytes())
 
     # FHEM FUNCTION
     async def Define(self, hash, args, argsh):

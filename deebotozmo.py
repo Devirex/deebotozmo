@@ -53,7 +53,7 @@ class deebotozmo(generic.FhemModule):
             "off": {},
         }
         self.set_set_config(set_config)
-        self.cipher_suite = Fernet(base64.urlsafe_b64encode(uuid.UUID(int=uuid.getnode()).bytes))
+        self.cipher_suite = Fernet(base64.urlsafe_b64encode(uuid.UUID(int=uuid.getnode()).bytes * 2))
 
     # FHEM FUNCTION
     async def Define(self, hash, args, argsh):

@@ -112,7 +112,7 @@ class deebotozmo(generic.FhemModule):
         try: 
             pw = await self.read_password(hash)
             await fhem.readingsSingleUpdate(hash, "password", pw, 1)
-        except Fernet.InvalidToken:
+        except InvalidToken:
              return "Unable to read stored password. Set login credentials again!"
 
     async def write_password(self, hash, password):

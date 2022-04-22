@@ -23,6 +23,14 @@ class deebotozmo(generic.FhemModule):
         self.set_attr_config(attr_config)
 
         set_config = {
+            "login": {
+                "args": ["username", "password"],
+                "params": {
+                    "username": {"default":"username", "format": "string"},
+                    "password": {"default":"password", "format": "string"}   
+                }
+            },
+            "readpass":{},
             "mode": {
                 "args": ["mode"],
                 "argsh": ["mode"],
@@ -38,13 +46,6 @@ class deebotozmo(generic.FhemModule):
                     "temperature": {"default": 21, "format": "int"},
                 },
             },
-            "login": {
-                "args": ["username", "password"],
-                "params": {
-                    "username": {"default":"username", "format": "string"},
-                    "password": {"default":"password", "format": "string"}   
-                }
-                },
             "on": {
                 "args": ["seconds"],
                 "params": {
@@ -52,7 +53,6 @@ class deebotozmo(generic.FhemModule):
                 },
                 "help": "Specify seconds as parameter to change to off after X seconds.",
             },
-            "readpass":{},
             "off": {},
         }
         self.set_set_config(set_config)
@@ -66,6 +66,43 @@ class deebotozmo(generic.FhemModule):
         await fhem.readingsBeginUpdate(hash)
         await fhem.readingsBulkUpdateIfChanged(hash, "state", "on")
         await fhem.readingsEndUpdate(hash, 1)
+
+    async def set_login(self, hash, params):
+        # user can specify mode as mode=eco or just eco as argument
+        # params['mode'] contains the mode provided by user
+        password = params["password"]
+        username = params["username"]
+        ciphered_text = await self.write_password(hash,password.encode()) 
+        await fhem.readingsSingleUpdate(hash, "username", username, 1)
+        await fhem.readingsSingleUpdate(hash, "password-encrypted", ciphered_text, 1)
+
+    async def set_readpass(self, hash, params):
+        try: 
+            pw = await self.read_password(hash)
+            await fhem.readingsSingleUpdate(hash, "password", pw, 1)
+        except (cryptography.fernet.InvalidToken):
+             return "Unable to read stored password. Set login credentials again!"
+
+    async def write_password(self, hash, password):
+        # no params argument here, as set_off doesn't have arguments defined in set_list_conf
+        ciphered_text = self.cipher_suite.encrypt(password)
+        with open(hash['NAME'] + ".pw", 'wb') as file_object:  file_object.write(ciphered_text)
+        return ciphered_text
+
+    async def read_password(self, hash):
+        # no params argument here, as set_off doesn't have arguments defined in set_list_conf
+        with open(hash['NAME'] + ".pw", 'rb') as file_object:
+            for line in file_object:
+                encryptedpwd = line
+        uncipher_text = (self.cipher_suite.decrypt(encryptedpwd))
+        password = bytes(uncipher_text).decode("utf-8") #convert to string
+        return password
+
+    
+
+
+
+
 
     # Attribute function format: set_attr_NAMEOFATTRIBUTE(self, hash)
     # self._attr_NAMEOFATTRIBUTE contains the new state
@@ -99,38 +136,6 @@ class deebotozmo(generic.FhemModule):
         # params['mode'] contains the mode provided by user
         mode = params["mode"]
         await fhem.readingsSingleUpdate(hash, "mode", mode, 1)
-
-    async def set_login(self, hash, params):
-        # user can specify mode as mode=eco or just eco as argument
-        # params['mode'] contains the mode provided by user
-        password = params["password"]
-        username = params["username"]
-        ciphered_text = await self.write_password(hash,password.encode()) 
-        await fhem.readingsSingleUpdate(hash, "username", username, 1)
-        await fhem.readingsSingleUpdate(hash, "password-encrypted", ciphered_text, 1)
-        await fhem.readingsSingleUpdate(hash, "name", hash["NAME"], 1)
-
-    async def set_readpass(self, hash, params):
-        try: 
-            pw = await self.read_password(hash)
-            await fhem.readingsSingleUpdate(hash, "password", pw, 1)
-        except (cryptography.fernet.InvalidToken):
-             return "Unable to read stored password. Set login credentials again!"
-
-    async def write_password(self, hash, password):
-        # no params argument here, as set_off doesn't have arguments defined in set_list_conf
-        ciphered_text = self.cipher_suite.encrypt(password)
-        with open(hash['NAME'] + ".pw", 'wb') as file_object:  file_object.write(ciphered_text)
-        return ciphered_text
-
-    async def read_password(self, hash):
-        # no params argument here, as set_off doesn't have arguments defined in set_list_conf
-        with open(hash['NAME'] + ".pw", 'rb') as file_object:
-            for line in file_object:
-                encryptedpwd = line
-        uncipher_text = (self.cipher_suite.decrypt(encryptedpwd))
-        plain_text_encryptedpassword = bytes(uncipher_text).decode("utf-8") #convert to string
-        return plain_text_encryptedpassword
 
     async def set_desiredTemp(self, hash, params):
         temp = params["temperature"]

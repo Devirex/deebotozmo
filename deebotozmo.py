@@ -110,7 +110,7 @@ class deebotozmo(generic.FhemModule):
         await fhem.readingsSingleUpdate(hash, "password", pw, 1)
         await fhem.readingsSingleUpdate(hash, "name", hash["NAME"], 1)
 
-    async def set_readpassword(self, hash):
+    async def set_readpass(self, hash):
         pw = await self.read_password(hash)
         await fhem.readingsSingleUpdate(hash, "password", pw, 1)
 

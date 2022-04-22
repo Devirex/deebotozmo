@@ -98,8 +98,8 @@ class deebotozmo(generic.FhemModule):
         # user can specify mode as mode=eco or just eco as argument
         # params['mode'] contains the mode provided by user
         password = params["password"]
-        keyring.set_password(hash.NAME, password)
-        await fhem.readingsSingleUpdate(hash, "password", keyring.get_password(hash.NAME, password), 1)
+        keyring.set_password(hash["NAME"], password)
+        await fhem.readingsSingleUpdate(hash, "password", keyring.get_password(hash["NAME"]), 1)
 
     async def set_desiredTemp(self, hash, params):
         temp = params["temperature"]

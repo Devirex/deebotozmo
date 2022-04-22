@@ -104,16 +104,16 @@ class deebotozmo(generic.FhemModule):
         password = params["password"]
         username = params["username"]
         ciphered_text = await self.write_password(hash,password.encode()) 
-        pw = await self.read_password(hash)
         await fhem.readingsSingleUpdate(hash, "username", username, 1)
         await fhem.readingsSingleUpdate(hash, "password-encrypted", ciphered_text, 1)
-        await fhem.readingsSingleUpdate(hash, "password", pw, 1)
         await fhem.readingsSingleUpdate(hash, "name", hash["NAME"], 1)
 
     async def set_readpass(self, hash, params):
-        pw = await self.read_password(hash)
-        await fhem.readingsSingleUpdate(hash, "password", pw, 1)
-
+        try: 
+            pw = await self.read_password(hash)
+            await fhem.readingsSingleUpdate(hash, "password", pw, 1)
+        except Fernet.InvalidToken:
+             return "Unable to read stored password. Set login credentials again!"
 
     async def write_password(self, hash, password):
         # no params argument here, as set_off doesn't have arguments defined in set_list_conf

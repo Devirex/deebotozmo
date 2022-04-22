@@ -1,6 +1,8 @@
 import asyncio
+from crypt import crypt
 import uuid, base64
 from cryptography.fernet import Fernet
+import cryptography
 import debugpy
 debugpy.listen(("192.168.1.50",5678))
 
@@ -112,7 +114,7 @@ class deebotozmo(generic.FhemModule):
         try: 
             pw = await self.read_password(hash)
             await fhem.readingsSingleUpdate(hash, "password", pw, 1)
-        except Fernet.InvalidToken:
+        except (cryptography.fernet.InvalidToken):
              return "Unable to read stored password. Set login credentials again!"
 
     async def write_password(self, hash, password):

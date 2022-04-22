@@ -36,7 +36,7 @@ class deebotozmo(generic.FhemModule):
                 },
             },
             "login": {
-                "args": ["login"],
+                "args": ["username", "password"],
                 "params": {
                     "username": {"default":"username", "format": "string"},
                     "password": {"default":"password", "format": "string"}   

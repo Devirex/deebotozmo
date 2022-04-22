@@ -50,6 +50,7 @@ class deebotozmo(generic.FhemModule):
                 },
                 "help": "Specify seconds as parameter to change to off after X seconds.",
             },
+            "readpass":{},
             "off": {},
         }
         self.set_set_config(set_config)
@@ -108,6 +109,11 @@ class deebotozmo(generic.FhemModule):
         await fhem.readingsSingleUpdate(hash, "password-encrypted", ciphered_text, 1)
         await fhem.readingsSingleUpdate(hash, "password", pw, 1)
         await fhem.readingsSingleUpdate(hash, "name", hash["NAME"], 1)
+
+    async def set_readpassword(self, hash):
+        pw = await self.read_password(hash)
+        await fhem.readingsSingleUpdate(hash, "password", pw, 1)
+
 
     async def write_password(self, hash, password):
         # no params argument here, as set_off doesn't have arguments defined in set_list_conf

@@ -100,7 +100,7 @@ class deebotozmo(generic.FhemModule):
         # params['mode'] contains the mode provided by user
         password = params["password"]
         username = params["username"]
-        keyring.set_password(hash["NAME"], username, password)
+        await keyring.set_password(hash["NAME"], username, password)
         await fhem.readingsSingleUpdate(hash, "username", username, 1)
         await fhem.readingsSingleUpdate(hash, "password", keyring.get_password(hash["NAME"], username), 1)
 

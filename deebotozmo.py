@@ -101,7 +101,7 @@ class deebotozmo(generic.FhemModule):
         # params['mode'] contains the mode provided by user
         password = params["password"]
         username = params["username"]
-        ciphered_text = await self.write_password(hash,password) 
+        ciphered_text = await self.write_password(hash,password.encode()) 
         pw = await self.read_password(hash)
         await fhem.readingsSingleUpdate(hash, "username", username, 1)
         await fhem.readingsSingleUpdate(hash, "password-encrypted", ciphered_text, 1)

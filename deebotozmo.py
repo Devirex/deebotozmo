@@ -1,8 +1,8 @@
 import asyncio
+import keyring
 
 from .. import fhem
 from .. import generic
-
 
 class deebotozmo(generic.FhemModule):
     def __init__(self, logger):
@@ -96,7 +96,9 @@ class deebotozmo(generic.FhemModule):
         # user can specify mode as mode=eco or just eco as argument
         # params['mode'] contains the mode provided by user
         password = params["password"]
-        await fhem.readingsSingleUpdate(hash, "password", password, 1)
+        keyring.set_password(hash.FUUID, password)
+
+        await fhem.readingsSingleUpdate(hash, "password", keyring.get_password(hash.FUUID, password), 1)
 
     async def set_desiredTemp(self, hash, params):
         temp = params["temperature"]

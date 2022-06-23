@@ -4,6 +4,13 @@ import uuid, base64
 from cryptography.fernet import Fernet
 import cryptography
 import debugpy
+from deebotozmo.ecovacs_api import EcovacsAPI
+from deebotozmo.ecovacs_mqtt import EcovacsMqtt
+from deebotozmo.events import BatteryEvent
+import aiohttp
+from aiohttp import ClientError
+from deebotozmo.util import md5
+from deebotozmo.vacuum_bot import VacuumBot
 debugpy.listen(("192.168.1.50",5678))
 
 from .. import fhem
@@ -57,7 +64,7 @@ class deebotozmo(generic.FhemModule):
         }
         self.set_set_config(set_config)
         self.cipher_suite = Fernet(base64.urlsafe_b64encode(uuid.UUID(int=uuid.getnode()).bytes * 2))
-
+    
     # FHEM FUNCTION
     async def Define(self, hash, args, argsh):
         await super().Define(hash, args, argsh)
@@ -74,12 +81,10 @@ class deebotozmo(generic.FhemModule):
         username = params["username"]
         ciphered_text = await self.write_password(hash,password.encode()) 
         await fhem.readingsSingleUpdate(hash, "username", username, 1)
-        await fhem.readingsSingleUpdate(hash, "password-encrypted", ciphered_text, 1)
-
+        
     async def set_readpass(self, hash, params):
         try: 
             pw = await self.read_password(hash)
-            await fhem.readingsSingleUpdate(hash, "password", pw, 1)
         except (cryptography.fernet.InvalidToken):
              return "Unable to read stored password. Set login credentials again!"
 
@@ -96,13 +101,38 @@ class deebotozmo(generic.FhemModule):
                 encryptedpwd = line
         uncipher_text = (self.cipher_suite.decrypt(encryptedpwd))
         password = bytes(uncipher_text).decode("utf-8") #convert to string
-        return password
-
+        return password          
     
+    async def main(self, hash):
+        email = self.params["username"]
+        password_hash = md5(self.read_password(self, hash))
+        continent = "eu"
+        country = "de"
 
+        async with aiohttp.ClientSession() as session:
+            api = EcovacsAPI(session, 0, email , password_hash , continent=continent, country=country,
+                        verify_ssl=False)
+            await api.login() 
+            devices_ = await api.get_devices()   
 
+            auth = await api.get_request_auth()
+            bot = VacuumBot(session, auth, devices_[0], continent=continent, country=country, verify_ssl=False)
+            mqtt = EcovacsMqtt(continent=continent, country=country)
+            await mqtt.initialize(auth)
+            await mqtt.subscribe(bot)
 
+            async def on_battery(event: BatteryEvent):
+                # Do stuff on battery event
+                # Battery full
+                await fhem.readingsSingleUpdate(hash, "Battery", event.value , 1)
+                pass
+            
+            bot.events.battery.subscribe(on_battery)
 
+    async def setup_deebootozmo(self, hash):
+        loop = asyncio.get_event_loop()
+        loop.create_task(self.main(self, hash))
+        loop.run_forever()
 
     # Attribute function format: set_attr_NAMEOFATTRIBUTE(self, hash)
     # self._attr_NAMEOFATTRIBUTE contains the new state

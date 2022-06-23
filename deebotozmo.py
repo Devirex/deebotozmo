@@ -1,4 +1,6 @@
 import asyncio
+import sys
+sys.path.append('Deebotozmo')
 from crypt import crypt
 import uuid, base64
 from cryptography.fernet import Fernet

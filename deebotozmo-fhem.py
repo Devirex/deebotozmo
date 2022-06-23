@@ -4,19 +4,19 @@ import uuid, base64
 from cryptography.fernet import Fernet
 import cryptography
 import debugpy
-from ecovacs_api import EcovacsAPI
-from ecovacs_mqtt import EcovacsMqtt
-from events import BatteryEvent
+from deebotozmo.ecovacs_api import EcovacsAPI
+from deebotozmo.ecovacs_mqtt import EcovacsMqtt
+from deebotozmo.events import BatteryEvent
 import aiohttp
 from aiohttp import ClientError
-from util import md5
-from vacuum_bot import VacuumBot
+from deebotozmo.util import md5
+from deebotozmo.vacuum_bot import VacuumBot
 debugpy.listen(("192.168.1.50",5678))
 
 from .. import fhem
 from .. import generic
 
-class deebotozmo(generic.FhemModule):
+class deebotozmoFhem(generic.FhemModule):
     def __init__(self, logger):
         super().__init__(logger)
 

@@ -4,9 +4,11 @@ import uuid, base64
 from cryptography.fernet import Fernet
 import cryptography
 import debugpy
-from fhempy.lib.deebotozmo.ecovacs_api import EcovacsAPI
-from fhempy.lib.deebotozmo.ecovacs_mqtt import EcovacsMqtt
-from fhempy.lib.deebotozmo.events import BatteryEvent
+import sys
+sys.path.insert(0, "../deebotozmo")
+from deebotozmo.ecovacs_api import EcovacsAPI
+from deebotozmo.ecovacs_mqtt import EcovacsMqtt
+from deebotozmo.events import BatteryEvent
 import aiohttp
 from aiohttp import ClientError
 from fhempy.lib.deebotozmo.util import md5

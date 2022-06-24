@@ -4,15 +4,13 @@ import uuid, base64
 from cryptography.fernet import Fernet
 import cryptography
 import debugpy
-import sys
-sys.path.insert(0, "../deebotozmo")
-from deebotozmo.ecovacs_api import EcovacsAPI
-from deebotozmo.ecovacs_mqtt import EcovacsMqtt
-from deebotozmo.events import BatteryEvent
+from ..deebotozmo.ecovacs_api import EcovacsAPI
+from ..deebotozmo.ecovacs_mqtt import EcovacsMqtt
+from ..deebotozmo.events import BatteryEvent
 import aiohttp
 from aiohttp import ClientError
-from fhempy.lib.deebotozmo.util import md5
-from fhempy.lib.deebotozmo.vacuum_bot import VacuumBot
+from ..deebotozmo.util import md5
+from ..deebotozmo.vacuum_bot import VacuumBot
 debugpy.listen(("192.168.1.50",5678))
 
 

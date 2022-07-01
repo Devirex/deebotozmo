@@ -106,6 +106,7 @@ class deebotozmofhem(generic.FhemModule):
         return password          
     
     async def main(self, hash):
+        fhem.readingsSingleUpdate(hash, "Test", "yeah" , 1)
         email = self.params["username"]
         password_hash = md5(self.read_password(hash))
         continent = "eu"

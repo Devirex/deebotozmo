@@ -7,7 +7,9 @@ import debugpy
 import aiohttp
 from aiohttp import ClientError
 import importlib
-importlib.import_module("deebotozmo")
+import sys
+from os.path import dirname
+sys.path.append(dirname(__file__))
 from deebotozmo.ecovacs_api import EcovacsAPI
 from deebotozmo.ecovacs_mqtt import EcovacsMqtt
 from deebotozmo.events import BatteryEvent

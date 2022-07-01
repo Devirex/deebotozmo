@@ -6,13 +6,13 @@ import cryptography
 import importlib.util
 import sys
 import debugpy
-from deebotozmo.events import BatteryEvent
-from deebotozmo.ecovacs_api import EcovacsAPI
-from deebotozmo.ecovacs_mqtt import EcovacsMqtt
+from ..deebotozmo.events import BatteryEvent
+from ..deebotozmo.ecovacs_api import EcovacsAPI
+from ..deebotozmo.ecovacs_mqtt import EcovacsMqtt
 import aiohttp
 from aiohttp import ClientError
-from deebotozmo.util import md5
-from deebotozmo.vacuum_bot import VacuumBot
+from ..deebotozmo.util import md5
+from ..deebotozmo.vacuum_bot import VacuumBot
 debugpy.listen(("192.168.1.50",5678))
 
 

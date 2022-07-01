@@ -87,7 +87,7 @@ class deebotozmofhem(generic.FhemModule):
     async def set_connect(self, hash, params):
         try: 
             pw = await self.read_password(hash)
-            self.setup_deebootozmo()
+            self.setup_deebotozmo(self, hash, params)
         except (cryptography.fernet.InvalidToken):
              return "Unable to read stored password. Set login credentials again!"
 
@@ -132,7 +132,7 @@ class deebotozmofhem(generic.FhemModule):
             
             bot.events.battery.subscribe(on_battery)
 
-    async def setup_deebootozmo(self, hash):
+    async def setup_deebotozmo(self, hash):
         loop = asyncio.get_event_loop()
         loop.create_task(self.main(self, hash))
         loop.run_forever()

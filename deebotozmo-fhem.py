@@ -6,9 +6,9 @@ import cryptography
 import importlib.util
 import sys
 import debugpy
-from deebotozmo.ecovacs_api import EcovacsAPI
-from deebotozmo.ecovacs_mqtt import EcovacsMqtt
-from deebotozmo.events import BatteryEvent
+from ...deebotozmo.ecovacs_api import EcovacsAPI
+from ...deebotozmo.ecovacs_mqtt import EcovacsMqtt
+from ...deebotozmo.events import BatteryEvent
 import aiohttp
 from aiohttp import ClientError
 from deebotozmo.util import md5

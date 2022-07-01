@@ -11,6 +11,7 @@ from .Deebotozmo.deebotozmo.ecovacs_mqtt import EcovacsMqtt
 from .Deebotozmo.deebotozmo.events import BatteryEvent
 from .Deebotozmo.deebotozmo.vacuum_bot import VacuumBot
 from .Deebotozmo.deebotozmo.util import md5
+from .Deebotozmo.deebotozmo.models import RequestAuth
 debugpy.listen(("192.168.1.50",5678))
 
 

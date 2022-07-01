@@ -6,7 +6,6 @@ import cryptography
 import debugpy
 import aiohttp
 from aiohttp import ClientError
-import Common
 from ..deebotozmo.ecovacs_api import EcovacsAPI
 from ..deebotozmo.ecovacs_mqtt import EcovacsMqtt
 from ..deebotozmo.events import BatteryEvent

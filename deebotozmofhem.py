@@ -84,7 +84,7 @@ class deebotozmofhem(generic.FhemModule):
         await fhem.readingsSingleUpdate(hash, "username", username, 1)
         await fhem.readingsSingleUpdate(hash, "password", ciphered_text, 1)
         
-    async def set_connect(self, hash, params):
+    async def set_connect(self, hash):
         try: 
             pw = await self.read_password(hash)
             self.setup_deebootozmo(self, hash)

@@ -132,8 +132,8 @@ class deebotozmofhem(generic.FhemModule):
             bot.events.battery.subscribe(on_battery)
 
     async def setup_deebotozmo(self, hash):
-        loop = asyncio.get_event_loop()
-        asyncio.ensure_future(self.main(hash), loop)
+        event_loop = asyncio.get_event_loop()
+        asyncio.ensure_future(self.main(hash), loop = event_loop)
 
     # Attribute function format: set_attr_NAMEOFATTRIBUTE(self, hash)
     # self._attr_NAMEOFATTRIBUTE contains the new state

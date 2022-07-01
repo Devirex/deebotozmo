@@ -38,7 +38,7 @@ class deebotozmofhem(generic.FhemModule):
                     "password": {"default":"password", "format": "string"}   
                 }
             },
-            "readpass":{},
+            "connect":{},
             "mode": {
                 "args": ["mode"],
                 "argsh": ["mode"],

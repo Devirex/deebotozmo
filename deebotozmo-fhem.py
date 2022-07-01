@@ -6,7 +6,6 @@ import cryptography
 import importlib.util
 import sys
 import debugpy
-from deebotozmo.events import BatteryEvent
 import aiohttp
 from aiohttp import ClientError
 debugpy.listen(("192.168.1.50",5678))
@@ -14,6 +13,7 @@ debugpy.listen(("192.168.1.50",5678))
 
 from .. import fhem
 from .. import generic
+from ...deebotozmo import events 
 
 class deebotozmoFhem(generic.FhemModule):
     def __init__(self, logger):

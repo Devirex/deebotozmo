@@ -84,9 +84,10 @@ class deebotozmofhem(generic.FhemModule):
         await fhem.readingsSingleUpdate(hash, "username", username, 1)
         await fhem.readingsSingleUpdate(hash, "password", ciphered_text, 1)
         
-    async def set_readpass(self, hash, params):
+    async def set_connect(self, hash, params):
         try: 
             pw = await self.read_password(hash)
+            self.setup_deebootozmo(self, hash)
         except (cryptography.fernet.InvalidToken):
              return "Unable to read stored password. Set login credentials again!"
 

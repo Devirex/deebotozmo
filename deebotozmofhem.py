@@ -6,6 +6,11 @@ import cryptography
 import debugpy
 import aiohttp
 from aiohttp import ClientError
+from deebotozmo.ecovacs_api import EcovacsAPI
+from deebotozmo.ecovacs_mqtt import EcovacsMqtt
+from deebotozmo.events import BatteryEvent
+from deebotozmo.vacuum_bot import VacuumBot
+from deebotozmo.util import md5
 debugpy.listen(("192.168.1.50",5678))
 
 
@@ -100,31 +105,30 @@ class deebotozmofhem(generic.FhemModule):
         return password          
     
     async def main(self, hash):
-        return "hello"
-        # email = self.params["username"]
-        # password_hash = md5(self.read_password(self, hash))
-        # continent = "eu"
-        # country = "de"
+        email = self.params["username"]
+        password_hash = md5(self.read_password(self, hash))
+        continent = "eu"
+        country = "de"
 
-        # async with aiohttp.ClientSession() as session:
-        #     api = EcovacsAPI(session, 0, email , password_hash , continent=continent, country=country,
-        #                 verify_ssl=False)
-        #     await api.login() 
-        #     devices_ = await api.get_devices()   
+        async with aiohttp.ClientSession() as session:
+            api = EcovacsAPI(session, 0, email , password_hash , continent=continent, country=country,
+                        verify_ssl=False)
+            await api.login() 
+            devices_ = await api.get_devices()   
 
-        #     auth = await api.get_request_auth()
-        #     bot = VacuumBot(session, auth, devices_[0], continent=continent, country=country, verify_ssl=False)
-        #     mqtt = EcovacsMqtt(continent=continent, country=country)
-        #     await mqtt.initialize(auth)
-        #     await mqtt.subscribe(bot)
+            auth = await api.get_request_auth()
+            bot = VacuumBot(session, auth, devices_[0], continent=continent, country=country, verify_ssl=False)
+            mqtt = EcovacsMqtt(continent=continent, country=country)
+            await mqtt.initialize(auth)
+            await mqtt.subscribe(bot)
 
-        #     async def on_battery(event: BatteryEvent):
-        #         # Do stuff on battery event
-        #         # Battery full
-        #         await fhem.readingsSingleUpdate(hash, "Battery", event.value , 1)
-        #         pass
+            async def on_battery(event: BatteryEvent):
+                # Do stuff on battery event
+                # Battery full
+                await fhem.readingsSingleUpdate(hash, "Battery", event.value , 1)
+                pass
             
-        #     bot.events.battery.subscribe(on_battery)
+            bot.events.battery.subscribe(on_battery)
 
     async def setup_deebootozmo(self, hash):
         loop = asyncio.get_event_loop()

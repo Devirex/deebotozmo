@@ -86,7 +86,7 @@ class deebotozmofhem(generic.FhemModule):
     async def set_connect(self, hash, params):
         try: 
             pw = await self.read_password(hash)
-            await self.setup_deebotozmo(self, hash)
+            await self.setup_deebotozmo(hash)
         except (cryptography.fernet.InvalidToken):
              return "Unable to read stored password. Set login credentials again!"
 
@@ -107,7 +107,7 @@ class deebotozmofhem(generic.FhemModule):
     
     async def main(self, hash):
         email = self.params["username"]
-        password_hash = md5(self.read_password(self, hash))
+        password_hash = md5(self.read_password(hash))
         continent = "eu"
         country = "de"
 
@@ -133,7 +133,7 @@ class deebotozmofhem(generic.FhemModule):
 
     async def setup_deebotozmo(self, hash):
         loop = asyncio.get_event_loop()
-        loop.create_task(self.main(self, hash))
+        loop.create_task(self.main(hash))
         loop.run_forever()
 
     # Attribute function format: set_attr_NAMEOFATTRIBUTE(self, hash)

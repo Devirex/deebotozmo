@@ -104,8 +104,8 @@ class deebotozmofhem(generic.FhemModule):
         uncipher_text = (self.cipher_suite.decrypt(encryptedpwd))
         password = bytes(uncipher_text).decode("utf-8") #convert to string
         return password          
-    
-    async def main(self, hash):
+        
+    async def setup_deebotozmo(self, hash):
         fhem.readingsSingleUpdate(hash, "Test", "yeah" , 1)
         email = self.params["username"]
         password_hash = md5(self.read_password(hash))
@@ -132,9 +132,6 @@ class deebotozmofhem(generic.FhemModule):
             
             bot.events.battery.subscribe(on_battery)
 
-    async def setup_deebotozmo(self, hash):
-        event_loop = asyncio.get_event_loop()
-        asyncio.ensure_future(self.main(hash), loop = event_loop)
 
     # Attribute function format: set_attr_NAMEOFATTRIBUTE(self, hash)
     # self._attr_NAMEOFATTRIBUTE contains the new state

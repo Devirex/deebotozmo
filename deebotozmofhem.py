@@ -63,8 +63,7 @@ class deebotozmofhem(generic.FhemModule):
         }
         self.set_set_config(set_config)
         self.cipher_suite = Fernet(base64.urlsafe_b64encode(uuid.UUID(int=uuid.getnode()).bytes * 2))
-        debugpy.listen(("192.168.1.50",5678))
-        debugpy.wait_for_client()
+        debugpy.listen(("192.168.1.50",1107))
     
     # FHEM FUNCTION
     async def Define(self, hash, args, argsh):

@@ -3,8 +3,6 @@ from crypt import crypt
 import uuid, base64
 from cryptography.fernet import Fernet
 import cryptography
-import importlib.util
-import sys
 import debugpy
 import aiohttp
 from aiohttp import ClientError

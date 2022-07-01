@@ -133,7 +133,7 @@ class deebotozmofhem(generic.FhemModule):
 
     async def setup_deebotozmo(self, hash):
         loop = asyncio.get_event_loop()
-        loop.create_task(self.main(hash))
+        loop.create_task(main(hash))
 
     # Attribute function format: set_attr_NAMEOFATTRIBUTE(self, hash)
     # self._attr_NAMEOFATTRIBUTE contains the new state

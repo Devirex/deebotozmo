@@ -148,7 +148,7 @@ class deebotozmofhem(generic.FhemModule):
         async def on_stats(event: StatsEvent):
             # Do stuff on battery event
             # Battery full
-            await fhem.readingsSingleUpdate(self.hash, "Map", bot.map.get_base64_map() , 1)
+            await fhem.readingsSingleUpdate(self.hash, "Map", bot.map , 1)
             pass
         
         bot.events.stats.subscribe(on_stats)

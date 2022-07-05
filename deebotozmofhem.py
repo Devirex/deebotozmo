@@ -81,6 +81,7 @@ class deebotozmofhem(generic.FhemModule):
         username = params["username"]
         ciphered_text = await self.write_password(hash,password.encode()) 
         await fhem.readingsSingleUpdate(hash, "username", username, 1)
+        await fhem.CommandAttr(hash, f"{hash['NAME']} username {username}")
         await fhem.sendCommandHash(hash, "save")
         await fhem.readingsSingleUpdate(hash, "password", ciphered_text, 1)
         

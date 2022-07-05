@@ -151,7 +151,7 @@ class deebotozmofhem(generic.FhemModule):
             await fhem.readingsSingleUpdate(self.hash, "Map", bot.map , 1)
             pass
         
-        bot.events.stat.subscribe(on_stats)
+        bot.events.stats.subscribe(on_stats)
         bot.events.battery.subscribe(on_battery)
            
            

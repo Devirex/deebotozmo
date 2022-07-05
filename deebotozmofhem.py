@@ -92,7 +92,7 @@ class deebotozmofhem(generic.FhemModule):
             if self._attr_username == "null":
                 return "Unable to read username. Set login credentials again!"
             self._attr_pw = await self.read_password(hash)
-            await self.setup_deebotozmo()
+            self.create_async_task(self.setup_deebotozmo())
         except (cryptography.fernet.InvalidToken):
              return "Unable to read stored password. Set login credentials again!"
 

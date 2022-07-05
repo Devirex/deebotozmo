@@ -137,6 +137,8 @@ class deebotozmofhem(generic.FhemModule):
                 pass
             
             bot.events.battery.subscribe(on_battery)
+            await bot.execute_command(Clean(CleanAction.START))
+            await asyncio.sleep(120) 
             await bot.execute_command(Charge())
 
 

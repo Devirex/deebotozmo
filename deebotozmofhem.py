@@ -85,8 +85,8 @@ class deebotozmofhem(generic.FhemModule):
         
     async def set_connect(self, hash, params):
         try: 
-            self._attr_username = await fhem.ReadingsVal(hash, "username", "")
-            if not self._attr_username:
+            self._attr_username = await fhem.ReadingsVal(hash, "username", "null")
+            if self._attr_username == "null":
                 return "Unable to read username. Set login credentials again!"
             self._attr_pw = await self.read_password(hash)
             await self.setup_deebotozmo(hash)

@@ -119,26 +119,27 @@ class deebotozmofhem(generic.FhemModule):
         country = "de"
         device_id = "".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(12))
 
-        async with aiohttp.ClientSession() as session:
-            api = EcovacsAPI(session, device_id, email , password_hash , continent=continent, country=country,
-                        verify_ssl=False)
-            await api.login() 
-            devices_ = await api.get_devices()   
+        self.session = aiohttp.ClientSession()
 
-            auth = await api.get_request_auth()
-            bot = VacuumBot(session, auth, devices_[0], continent=continent, country=country, verify_ssl=False)
-            mqtt = EcovacsMqtt(continent=continent, country=country)
-            await mqtt.initialize(auth)
-            await mqtt.subscribe(bot)
+        api = EcovacsAPI(self.session, device_id, email , password_hash , continent=continent, country=country,
+                    verify_ssl=False)
+        await api.login() 
+        devices_ = await api.get_devices()   
 
-            async def on_battery(event: BatteryEvent):
-                # Do stuff on battery event
-                # Battery full
-                await fhem.readingsSingleUpdate(self.hash, "Battery", event.value , 1)
-                pass
-            
-            bot.events.battery.subscribe(on_battery)
-            await bot.execute_command(Charge())
+        auth = await api.get_request_auth()
+        bot = VacuumBot(self.session, auth, devices_[0], continent=continent, country=country, verify_ssl=False)
+        mqtt = EcovacsMqtt(continent=continent, country=country)
+        await mqtt.initialize(auth)
+        await mqtt.subscribe(bot)
+
+        async def on_battery(event: BatteryEvent):
+            # Do stuff on battery event
+            # Battery full
+            await fhem.readingsSingleUpdate(self.hash, "Battery", event.value , 1)
+            pass
+        
+        bot.events.battery.subscribe(on_battery)
+           
            
 
 

@@ -80,7 +80,10 @@ class deebotozmofhem(generic.FhemModule):
         password = params["password"]
         username = params["username"]
         ciphered_text = await self.write_password(hash,password.encode()) 
-        await fhem.UserAttr(hash, "username", username, 1)
+        await fhem.readingsSingleUpdate(hash, "username", username, 1)
+        self._attr_username = username;
+        await fhem.COmmandAttr(hash, "username", username, 1)
+        await fhem.readingsSingleUpdate(hash, "password", ciphered_text, 1)
         
     async def set_connect(self, hash, params):
         try: 

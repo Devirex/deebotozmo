@@ -127,7 +127,7 @@ class deebotozmofhem(generic.FhemModule):
         try:
             await api.login() 
         except RuntimeError as e:
-            return e.msg
+            return e.args[0]
 
         devices_ = await api.get_devices()   
 

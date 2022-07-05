@@ -20,10 +20,10 @@ class deebotozmofhem(generic.FhemModule):
         super().__init__(logger)
 
         attr_config = {
-            "interval": {
-                "default": 100,
-                "format": "int",
-                "help": "Change interval, default is 100.",
+            "username": {
+                "default": "",
+                "format": "string",
+                "help": "Set Username with Login Command",
             }
         }
         self.set_attr_config(attr_config)
@@ -80,13 +80,12 @@ class deebotozmofhem(generic.FhemModule):
         password = params["password"]
         username = params["username"]
         ciphered_text = await self.write_password(hash,password.encode()) 
-        await fhem.readingsSingleUpdate(hash, "username", username, 1)
-        await fhem.readingsSingleUpdate(hash, "password", ciphered_text, 1)
+        await fhem.UserAttr(hash, "username", username, 1)
         
     async def set_connect(self, hash, params):
         try: 
             pw = await self.read_password(hash)
-            await self.setup_deebotozmo(hash)
+            await self.setup_deebotozmo(hash, pw)
         except (cryptography.fernet.InvalidToken):
              return "Unable to read stored password. Set login credentials again!"
 
@@ -107,7 +106,7 @@ class deebotozmofhem(generic.FhemModule):
         
     async def setup_deebotozmo(self, hash):
         fhem.readingsSingleUpdate(hash, "Test", "yeah" , 1)
-        email = self.params["username"]
+        email = self
         password_hash = md5(self.read_password(hash))
         continent = "eu"
         country = "de"

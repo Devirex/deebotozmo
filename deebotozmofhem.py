@@ -132,7 +132,7 @@ class deebotozmofhem(generic.FhemModule):
 
         await fhem.readingsSingleUpdate(self.hash, "state", "connected" , 1)
         devices_ = await api.get_devices()   
-        await fhem.readingsSingleUpdate(self.hash, "devices", devices_.len() , 1)
+        await fhem.readingsSingleUpdate(self.hash, "devices", len(devices_) , 1)
 
         auth = await api.get_request_auth()
         bot = VacuumBot(self.session, auth, devices_[0], continent=continent, country=country, verify_ssl=False)

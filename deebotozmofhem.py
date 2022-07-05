@@ -12,6 +12,7 @@ from deebotozmo.events import BatteryEvent
 from deebotozmo.vacuum_bot import VacuumBot
 from deebotozmo.util import md5
 import random
+import string
 
 from .. import fhem
 from .. import generic

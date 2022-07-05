@@ -7,7 +7,7 @@ import debugpy
 import aiohttp
 from aiohttp import ClientError
 from deebotozmo.ecovacs_api import EcovacsAPI
-from deebotozmo.commands.clean import CleanAction
+from deebotozmo.commands import Charge
 from deebotozmo.ecovacs_mqtt import EcovacsMqtt
 from deebotozmo.events import BatteryEvent
 from deebotozmo.vacuum_bot import VacuumBot

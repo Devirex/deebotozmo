@@ -11,6 +11,7 @@ from deebotozmo.ecovacs_mqtt import EcovacsMqtt
 from deebotozmo.events import BatteryEvent
 from deebotozmo.vacuum_bot import VacuumBot
 from deebotozmo.util import md5
+import random
 
 from .. import fhem
 from .. import generic

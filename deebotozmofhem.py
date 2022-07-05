@@ -65,6 +65,7 @@ class deebotozmofhem(generic.FhemModule):
             "off": {},
         }
         self.set_set_config(set_config)
+        self.session = None
         self.cipher_suite = Fernet(base64.urlsafe_b64encode(uuid.UUID(int=uuid.getnode()).bytes * 2))
         debugpy.listen(("192.168.1.50",1107))
     
@@ -123,7 +124,11 @@ class deebotozmofhem(generic.FhemModule):
 
         api = EcovacsAPI(self.session, device_id, email , password_hash , continent=continent, country=country,
                     verify_ssl=False)
-        await api.login() 
+        try:
+            await api.login() 
+        except RuntimeError as e:
+            return e.message
+
         devices_ = await api.get_devices()   
 
         auth = await api.get_request_auth()
@@ -137,7 +142,7 @@ class deebotozmofhem(generic.FhemModule):
             # Battery full
             await fhem.readingsSingleUpdate(self.hash, "Battery", event.value , 1)
             pass
-        
+
         bot.events.battery.subscribe(on_battery)
            
            

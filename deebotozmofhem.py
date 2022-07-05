@@ -9,7 +9,7 @@ from aiohttp import ClientError
 from deebotozmo.ecovacs_api import EcovacsAPI
 from deebotozmo.commands import Charge
 from deebotozmo.ecovacs_mqtt import EcovacsMqtt
-from deebotozmo.events import (BatteryEvent, MapEvent)
+from deebotozmo.events import (BatteryEvent, MapEvent, StatsEvent)
 from deebotozmo.vacuum_bot import VacuumBot
 from deebotozmo.util import md5
 import random
@@ -145,13 +145,13 @@ class deebotozmofhem(generic.FhemModule):
             await fhem.readingsSingleUpdate(self.hash, "Battery", event.value , 1)
             pass
         
-        async def on_map(event: MapEvent):
+        async def on_stats(event: StatsEvent):
             # Do stuff on battery event
             # Battery full
             await fhem.readingsSingleUpdate(self.hash, "Map", bot.map , 1)
             pass
         
-        bot.events.map.subscribe(on_map)
+        bot.events.stat.subscribe(on_stats)
         bot.events.battery.subscribe(on_battery)
            
            

@@ -113,7 +113,6 @@ class deebotozmofhem(generic.FhemModule):
         return password          
         
     async def setup_deebotozmo(self):
-        await fhem.readingsSingleUpdate(self.hash, "Test", "yeah" , 1)
         email = self._attr_username
         password_hash = md5(self._attr_pw)
         continent = "eu"
@@ -145,7 +144,14 @@ class deebotozmofhem(generic.FhemModule):
             # Battery full
             await fhem.readingsSingleUpdate(self.hash, "Battery", event.value , 1)
             pass
-
+        
+        async def on_map(event: MapEvent):
+            # Do stuff on battery event
+            # Battery full
+            await fhem.readingsSingleUpdate(self.hash, "Map", bot.map , 1)
+            pass
+        
+        bot.events.map.subscribe(on_map)
         bot.events.battery.subscribe(on_battery)
            
            

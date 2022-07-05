@@ -92,7 +92,7 @@ class deebotozmofhem(generic.FhemModule):
             if self._attr_username == "null":
                 return "Unable to read username. Set login credentials again!"
             self._attr_pw = await self.read_password(hash)
-            self.create_async_task(self.setup_deebotozmo(hash))
+            self.create_async_task(self.setup_deebotozmo())
         except (cryptography.fernet.InvalidToken):
              return "Unable to read stored password. Set login credentials again!"
 
@@ -111,8 +111,8 @@ class deebotozmofhem(generic.FhemModule):
         password = bytes(uncipher_text).decode("utf-8") #convert to string
         return password          
         
-    async def setup_deebotozmo(self, hash):
-        fhem.readingsSingleUpdate(hash, "Test", "yeah" , 1)
+    async def setup_deebotozmo(self):
+        fhem.readingsSingleUpdate(self.hash, "Test", "yeah" , 1)
         email = self._attr_username
         password_hash = md5(self._attr_pw)
         continent = "eu"
@@ -134,7 +134,7 @@ class deebotozmofhem(generic.FhemModule):
             async def on_battery(event: BatteryEvent):
                 # Do stuff on battery event
                 # Battery full
-                await fhem.readingsSingleUpdate(hash, "Battery", event.value , 1)
+                await fhem.readingsSingleUpdate(self.hash, "Battery", event.value , 1)
                 pass
             
             bot.events.battery.subscribe(on_battery)

@@ -112,7 +112,7 @@ class deebotozmofhem(generic.FhemModule):
         return password          
         
     async def setup_deebotozmo(self):
-        fhem.readingsSingleUpdate(self.hash, "Test", "yeah" , 1)
+        await fhem.readingsSingleUpdate(self.hash, "Test", "yeah" , 1)
         email = self._attr_username
         password_hash = md5(self._attr_pw)
         continent = "eu"

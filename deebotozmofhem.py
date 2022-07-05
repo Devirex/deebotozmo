@@ -9,7 +9,7 @@ from aiohttp import ClientError
 from deebotozmo.ecovacs_api import EcovacsAPI
 from deebotozmo.commands import Charge
 from deebotozmo.ecovacs_mqtt import EcovacsMqtt
-from deebotozmo.events import BatteryEvent
+from deebotozmo.events import (BatteryEvent, MapEvent)
 from deebotozmo.vacuum_bot import VacuumBot
 from deebotozmo.util import md5
 import random

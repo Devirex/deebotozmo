@@ -153,8 +153,8 @@ class deebotozmofhem(generic.FhemModule):
         
         bot.events.map.subscribe(on_map)
         bot.events.battery.subscribe(on_battery)
-        await bot.events.map.request_refresh()
-        await bot.events.room.request_refresh()
+        bot.events.map.request_refresh()
+        bot.events.room.request_refresh()
         await fhem.readingsSingleUpdate(self.hash, "Map" , '<img src="data:image/png;base64;' + bot.map.get_base64_map(400).decode('ascii') + '"/>', 1)
            
            

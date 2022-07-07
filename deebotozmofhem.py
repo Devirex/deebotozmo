@@ -74,7 +74,7 @@ class deebotozmofhem(generic.FhemModule):
         await super().Define(hash, args, argsh)
         if len(args) != 4:
             return "Usage: define vacuumcleaner fhempy deebotozmo username"
-        self.hash['username'] = args[4]
+        self.hash['username'] = args[3]
         await fhem.readingsBeginUpdate(hash)
         await fhem.readingsBulkUpdateIfChanged(hash, "state", "on")
         await fhem.readingsEndUpdate(hash, 1)

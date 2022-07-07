@@ -7,7 +7,7 @@ import debugpy
 import aiohttp
 from aiohttp import ClientError
 from deebotozmo.ecovacs_api import EcovacsAPI
-from deebotozmo.commands import Charge
+from deebotozmo.commands import (Charge, Map)
 from deebotozmo.ecovacs_mqtt import EcovacsMqtt
 from deebotozmo.events import (BatteryEvent, MapEvent, StatsEvent)
 from deebotozmo.vacuum_bot import VacuumBot
@@ -152,6 +152,7 @@ class deebotozmofhem(generic.FhemModule):
         
         bot.events.map.subscribe(on_map)
         bot.events.battery.subscribe(on_battery)
+        await bot.execute_command(Map())
            
            
 

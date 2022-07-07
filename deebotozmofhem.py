@@ -147,12 +147,12 @@ class deebotozmofhem(generic.FhemModule):
         async def on_map(event: MapEvent):
             # Do stuff on battery event
             # Battery full
-            await fhem.readingsSingleUpdate(self.hash, "Map" , '<img src="data:image/png;base64;' + base64.decodebytes(bot.map.get_base64_map(400)).decode('utf-8') + '"/>', 1)
+            await fhem.readingsSingleUpdate(self.hash, "Map" , '<img src="data:image/png;base64;' + bot.map.get_base64_map(400).decode('utf-8') + '"/>', 1)
             pass
         
         bot.events.map.subscribe(on_map)
         bot.events.battery.subscribe(on_battery)
-        await fhem.readingsSingleUpdate(self.hash, "Map" , '<img src="data:image/png;base64;' + base64.decodebytes(bot.map.get_base64_map(400)).decode('utf-8') + '"/>', 1)
+        await fhem.readingsSingleUpdate(self.hash, "Map" , '<img src="data:image/png;base64;' + bot.map.get_base64_map(400).decode('utf-8') + '"/>', 1)
            
            
 

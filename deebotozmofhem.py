@@ -152,7 +152,7 @@ class deebotozmofhem(generic.FhemModule):
         
         bot.events.map.subscribe(on_map)
         bot.events.battery.subscribe(on_battery)
-        await bot.execute_command(GetMajorMap())
+        await bot.events.map.request_refresh()
            
            
 

@@ -79,24 +79,22 @@ class deebotozmofhem(generic.FhemModule):
         await fhem.readingsBulkUpdateIfChanged(hash, "state", "on")
         await fhem.readingsEndUpdate(hash, 1)
 
-    async def set_login(self, hash, params):
+    async def set_password(self, hash, params):
         # user can specify mode as mode=eco or just eco as argument
         # params['mode'] contains the mode provided by user
         password = params["password"]
-        username = params["username"]
         ciphered_text = await self.write_password(hash,password.encode()) 
-        await fhem.readingsSingleUpdate(hash, "username", username, 1)
         await fhem.readingsSingleUpdate(hash, "password", ciphered_text, 1)
         
     async def set_connect(self, hash, params):
         try: 
-            self._attr_username = await fhem.ReadingsVal(hash['NAME'], "username", "null")
-            if self._attr_username == "null":
-                return "Unable to read username. Set login credentials again!"
-            self._attr_pw = await self.read_password(hash)
+            self.username = self.hash['username']
+            if self.username == "null":
+                return "Unable to read username. define [name] fhempy deebotozmofhem [username]"
+            self.pw = md5(await self.read_password(hash))
             self.create_async_task(self.setup_deebotozmo())
         except (cryptography.fernet.InvalidToken):
-             return "Unable to read stored password. Set login credentials again!"
+             return "Unable to read stored password. Set password again!"
 
     async def write_password(self, hash, password):
         # no params argument here, as set_off doesn't have arguments defined in set_list_conf
@@ -114,8 +112,8 @@ class deebotozmofhem(generic.FhemModule):
         return password          
         
     async def setup_deebotozmo(self):
-        email = self._attr_username
-        password_hash = md5(self._attr_pw)
+        email = self.username
+        password_hash = self.pw
         continent = "eu"
         country = "de"
         device_id = "".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(12))

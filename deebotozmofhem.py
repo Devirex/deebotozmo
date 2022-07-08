@@ -120,6 +120,7 @@ class deebotozmofhem(generic.FhemModule):
         device_id = "".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(12))
 
         self.session = aiohttp.ClientSession()
+        
 
         api = EcovacsAPI(self.session, device_id, email , password_hash , continent=continent, country=country,
                     verify_ssl=False)
@@ -134,7 +135,7 @@ class deebotozmofhem(generic.FhemModule):
         await fhem.readingsSingleUpdate(self.hash, "devices", len(devices_) , 1)
 
         auth = await api.get_request_auth()
-        bot = VacuumBot(self.session, auth, devices_[0], continent=continent, country=country, verify_ssl=False)
+        self.bot = VacuumBot(self.session, auth, devices_[0], continent=continent, country=country, verify_ssl=False)
         mqtt = EcovacsMqtt(continent=continent, country=country)
         await mqtt.initialize(auth)
         await mqtt.subscribe(bot)
@@ -148,15 +149,13 @@ class deebotozmofhem(generic.FhemModule):
         async def on_map(event: MapEvent):
             # Do stuff on battery event
             # Battery full
-            await fhem.readingsSingleUpdate(self.hash, "Map" , '<img src="data:image/png;base64;' + bot.map.get_base64_map(400).decode('ascii') + '"/>', 1)
+            await fhem.readingsSingleUpdate(self.hash, "Map" , '<img src="data:image/png;base64;' + self.bot.map.get_base64_map(400).decode('ascii') + '"/>', 1)
             pass
         
-        bot.events.map.subscribe(on_map)
-        bot.events.battery.subscribe(on_battery)
-        bot.events.map.request_refresh()
-        bot.events.rooms.request_refresh()
-        await fhem.readingsSingleUpdate(self.hash, "Map" , '<img src="data:image/png;base64;' + bot.map.get_base64_map(400).decode('ascii') + '"/>', 1)
-           
+        self.bot.events.map.subscribe(on_map)
+        self.bot.events.battery.subscribe(on_battery)
+        self.bot.events.map.request_refresh()
+        self.bot.events.rooms.request_refresh()
            
 
 

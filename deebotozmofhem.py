@@ -138,7 +138,7 @@ class deebotozmofhem(generic.FhemModule):
         self.bot = VacuumBot(self.session, auth, devices_[0], continent=continent, country=country, verify_ssl=False)
         mqtt = EcovacsMqtt(continent=continent, country=country)
         await mqtt.initialize(auth)
-        await mqtt.subscribe(bot)
+        await mqtt.subscribe(self.bot)
 
         async def on_battery(event: BatteryEvent):
             # Do stuff on battery event

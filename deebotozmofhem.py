@@ -156,8 +156,6 @@ class deebotozmofhem(generic.FhemModule):
             pass
 
         self.bot.events.map.subscribe(on_map)
-        self.bot.events.rooms.subscribe(on_map)
-        self.bot.events.stats.subscribe(on_map)
         self.bot.events.battery.subscribe(on_battery)
         await self.bot.execute_command(GetCleanInfo())
        # await self.bot.execute_command(GetCachedMapInfo())

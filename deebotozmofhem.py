@@ -159,8 +159,7 @@ class deebotozmofhem(generic.FhemModule):
         await self.bot.execute_command(GetStats())
         await self.bot.execute_command(GetPos())
         await self.bot.execute_command(GetMajorMap())
-        
-       
+        await asyncio.sleep(9000) 
 
            
 

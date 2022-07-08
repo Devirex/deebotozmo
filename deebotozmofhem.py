@@ -50,6 +50,7 @@ class deebotozmofhem(generic.FhemModule):
             "desiredTemp": {"args": ["temperature"], "options": "slider,10,1,30"},
             "clean":{},
             "charge":{},
+            "map":{},
             "holidayMode": {
                 "args": ["endday", "endtime", "temperature"],
                 "params": {
@@ -158,18 +159,14 @@ class deebotozmofhem(generic.FhemModule):
         self.bot.events.map.subscribe(on_map)
         self.bot.events.battery.subscribe(on_battery)
         await self.bot.execute_command(GetCleanInfo())
-       # await self.bot.execute_command(GetCachedMapInfo())
-        await self.bot.execute_command(GetCleanLogs())
-        await fhem.readingsSingleUpdate(self.hash, "Map" , '<html><img src="data:image/png;base64,' + self.bot.map.get_base64_map(500).decode('ascii') + '"/></html>', 1)
-        await asyncio.sleep(9000) 
-
            
     async def set_clean(self, hash, params):
         await self.bot.execute_command(Clean(CleanAction.START))
 
     async def set_charge(self, hash, params):
         await self.bot.execute_command(Charge())
-
+    async def set_map(self, hash, params):
+        await fhem.readingsSingleUpdate(self.hash, "Map" , '<html><img src="data:image/png;base64,' + self.bot.map.get_base64_map(500).decode('ascii') + '"/></html>', 1)
     # Attribute function format: set_attr_NAMEOFATTRIBUTE(self, hash)
     # self._attr_NAMEOFATTRIBUTE contains the new state
     async def set_attr_interval(self, hash):

@@ -159,6 +159,7 @@ class deebotozmofhem(generic.FhemModule):
         await self.bot.execute_command(GetStats())
         await self.bot.execute_command(GetPos())
         await self.bot.execute_command(GetMajorMap())
+        await fhem.readingsSingleUpdate(self.hash, "Map" , '<img src="data:image/png;base64;' + self.bot.map.get_base64_map(500).decode('ascii') + '"/>', 1)
         await asyncio.sleep(9000) 
 
            

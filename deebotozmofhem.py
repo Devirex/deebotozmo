@@ -155,14 +155,15 @@ class deebotozmofhem(generic.FhemModule):
             pass
 
         self.bot.events.map.subscribe(on_map)
+        self.bot.events.rooms.subscribe(on_map)
+        self.bot.events.stats.subscribe(on_map)
         self.bot.events.battery.subscribe(on_battery)
         await self.bot.execute_command(GetCleanInfo())
        # await self.bot.execute_command(GetCachedMapInfo())
         await self.bot.execute_command(GetCleanLogs())
-#        await self.bot.execute_command(GetStats())
+        await self.bot.execute_command(GetStats())
 #        await self.bot.execute_command(GetPos())
 #        await self.bot.execute_command(GetMajorMap())
-        await fhem.readingsSingleUpdate(self.hash, "Map" , '<html><img src="data:image/png;base64,' + self.bot.map.get_base64_map(500).decode('ascii') + '"/></html>', 1)
         await fhem.readingsSingleUpdate(self.hash, "Map" , '<html><img src="data:image/png;base64,' + self.bot.map.get_base64_map(500).decode('ascii') + '"/></html>', 1)
         await asyncio.sleep(9000) 
 

@@ -12,6 +12,7 @@ from deebotozmo.ecovacs_mqtt import EcovacsMqtt
 from deebotozmo.events import (BatteryEvent, MapEvent, StatsEvent, RoomsEvent)
 from deebotozmo.vacuum_bot import VacuumBot
 from deebotozmo.util import md5
+from deebotozmo.commands.clean import CleanAction
 import random
 import string
 
@@ -47,6 +48,7 @@ class deebotozmofhem(generic.FhemModule):
                 "options": "eco,comfort",
             },
             "desiredTemp": {"args": ["temperature"], "options": "slider,10,1,30"},
+            "clean":{},
             "holidayMode": {
                 "args": ["endday", "endtime", "temperature"],
                 "params": {
@@ -164,7 +166,8 @@ class deebotozmofhem(generic.FhemModule):
         await asyncio.sleep(9000) 
 
            
-
+    async def set_clean(self):
+        await self.bot.execute_command(Clean(CleanAction.START))
 
     # Attribute function format: set_attr_NAMEOFATTRIBUTE(self, hash)
     # self._attr_NAMEOFATTRIBUTE contains the new state

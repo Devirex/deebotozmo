@@ -166,7 +166,7 @@ class deebotozmofhem(generic.FhemModule):
         await asyncio.sleep(9000) 
 
            
-    async def set_clean(self):
+    async def set_clean(self, hash, params):
         await self.bot.execute_command(Clean(CleanAction.START))
 
     # Attribute function format: set_attr_NAMEOFATTRIBUTE(self, hash)

@@ -147,7 +147,6 @@ class deebotozmofhem(generic.FhemModule):
             # Do stuff on battery event
             # Battery full
             await fhem.readingsSingleUpdate(self.hash, "Battery", event.value , 1)
-            self.bot.events.map.request_refresh()
             pass
         
         async def on_map(_: MapEvent) -> None:
@@ -158,6 +157,7 @@ class deebotozmofhem(generic.FhemModule):
 
         self.bot.events.map.subscribe(on_map)
         self.bot.events.battery.subscribe(on_battery)
+        self.bot.events.map.request_refresh()
         await self.bot.execute_command(GetCleanInfo())
            
     async def set_clean(self, hash, params):
@@ -171,8 +171,9 @@ class deebotozmofhem(generic.FhemModule):
 
     async def display_loop(self):
         while True:
+            img = self.bot.map.get_base64_map(500).decode('ascii')
             await asyncio.sleep(0.5)
-            await fhem.readingsSingleUpdate(self.hash, "Map" , '<html><img src="data:image/png;base64,' + self.bot.map.get_base64_map(500).decode('ascii') + '" width="500"/></html>', 1) 
+            await fhem.readingsSingleUpdate(self.hash, "Map" , '<html><img src="data:image/png;base64,' + img + '" width="500"/></html>', 1) 
     # Attribute function format: set_attr_NAMEOFATTRIBUTE(self, hash)
     # self._attr_NAMEOFATTRIBUTE contains the new state
     async def set_attr_interval(self, hash):

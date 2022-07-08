@@ -1,5 +1,6 @@
 import asyncio
 from crypt import crypt
+from tkinter import S
 import uuid, base64
 from cryptography.fernet import Fernet
 import cryptography
@@ -7,7 +8,7 @@ import debugpy
 import aiohttp
 from aiohttp import ClientError
 from deebotozmo.ecovacs_api import EcovacsAPI
-from deebotozmo.commands import (Charge, GetCachedMapInfo)
+from deebotozmo.commands import (Charge, GetCachedMapInfo, GetStats, GetPos, GetCleanLogs, GetCleanInfo)
 from deebotozmo.ecovacs_mqtt import EcovacsMqtt
 from deebotozmo.events import (BatteryEvent, MapEvent, StatsEvent, RoomsEvent)
 from deebotozmo.vacuum_bot import VacuumBot
@@ -146,14 +147,19 @@ class deebotozmofhem(generic.FhemModule):
             await fhem.readingsSingleUpdate(self.hash, "Battery", event.value , 1)
             pass
         
-        async def on_room(event: RoomsEvent):
+        async def on_map(event: MapEvent):
             # Do stuff on battery event
             # Battery full
             await fhem.readingsSingleUpdate(self.hash, "Map" , '<img src="data:image/png;base64;' + self.bot.map.get_base64_map(500).decode('ascii') + '"/>', 1)
             pass
         
-        self.bot.events.rooms.subscribe(on_room)
-        self.bot.events.rooms.request_refresh()
+        await self.bot.execute_command(GetCleanInfo())
+        await self.bot.execute_command(GetCachedMapInfo())
+        await self.bot.execute_command(GetCleanLogs())
+        await self.bot.execute_command(GetStats())
+        await self.bot.execute_command(GetPos())
+        self.bot.events.map.subscribe(on_map)
+        self.bot.events.map.request_refresh()
         self.bot.events.battery.subscribe(on_battery)
 
            

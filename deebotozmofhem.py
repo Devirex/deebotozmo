@@ -146,6 +146,7 @@ class deebotozmofhem(generic.FhemModule):
             # Do stuff on battery event
             # Battery full
             await fhem.readingsSingleUpdate(self.hash, "Battery", event.value , 1)
+            self.bot.events.map.request_refresh()
             pass
         
         async def on_map(_: MapEvent) -> None:
@@ -161,9 +162,6 @@ class deebotozmofhem(generic.FhemModule):
         await self.bot.execute_command(GetCleanInfo())
        # await self.bot.execute_command(GetCachedMapInfo())
         await self.bot.execute_command(GetCleanLogs())
-        await self.bot.execute_command(GetStats())
-#        await self.bot.execute_command(GetPos())
-#        await self.bot.execute_command(GetMajorMap())
         await fhem.readingsSingleUpdate(self.hash, "Map" , '<html><img src="data:image/png;base64,' + self.bot.map.get_base64_map(500).decode('ascii') + '"/></html>', 1)
         await asyncio.sleep(9000) 
 

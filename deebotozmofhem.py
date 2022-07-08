@@ -49,6 +49,7 @@ class deebotozmofhem(generic.FhemModule):
             },
             "desiredTemp": {"args": ["temperature"], "options": "slider,10,1,30"},
             "clean":{},
+            "charge":{},
             "holidayMode": {
                 "args": ["endday", "endtime", "temperature"],
                 "params": {
@@ -168,6 +169,9 @@ class deebotozmofhem(generic.FhemModule):
            
     async def set_clean(self, hash, params):
         await self.bot.execute_command(Clean(CleanAction.START))
+
+    async def set_charge(self, hash, params):
+        await self.bot.execute_command(Charge())
 
     # Attribute function format: set_attr_NAMEOFATTRIBUTE(self, hash)
     # self._attr_NAMEOFATTRIBUTE contains the new state

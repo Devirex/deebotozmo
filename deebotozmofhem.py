@@ -1,6 +1,5 @@
 import asyncio
 from crypt import crypt
-from tkinter import S
 import uuid, base64
 from cryptography.fernet import Fernet
 import cryptography

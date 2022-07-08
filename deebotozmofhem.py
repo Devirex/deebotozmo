@@ -151,15 +151,16 @@ class deebotozmofhem(generic.FhemModule):
             # Battery full
             await fhem.readingsSingleUpdate(self.hash, "Map" , '<img src="data:image/png;base64;' + self.bot.map.get_base64_map(500).decode('ascii') + '"/>', 1)
             pass
-        
+
+        self.bot.events.map.subscribe(on_map)
+        self.bot.events.map.request_refresh()
+        self.bot.events.battery.subscribe(on_battery)
         await self.bot.execute_command(GetCleanInfo())
         await self.bot.execute_command(GetCachedMapInfo())
         await self.bot.execute_command(GetCleanLogs())
         await self.bot.execute_command(GetStats())
         await self.bot.execute_command(GetPos())
-        self.bot.events.map.subscribe(on_map)
-        self.bot.events.map.request_refresh()
-        self.bot.events.battery.subscribe(on_battery)
+       
 
            
 

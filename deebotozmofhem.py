@@ -149,7 +149,7 @@ class deebotozmofhem(generic.FhemModule):
         async def on_room(event: RoomsEvent):
             # Do stuff on battery event
             # Battery full
-            await fhem.readingsSingleUpdate(self.hash, "Map" , '<img src="data:image/png;base64;' + self.bot.map.get_base64_map(400).decode('ascii') + '"/>', 1)
+            await fhem.readingsSingleUpdate(self.hash, "Map" , '<img src="data:image/png;base64;' + self.bot.map.get_base64_map(500).decode('ascii') + '"/>', 1)
             pass
         
         self.bot.events.rooms.subscribe(on_room)

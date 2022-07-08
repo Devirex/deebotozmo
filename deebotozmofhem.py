@@ -165,8 +165,11 @@ class deebotozmofhem(generic.FhemModule):
 
     async def set_charge(self, hash, params):
         await self.bot.execute_command(Charge())
+
     async def set_map(self, hash, params):
         await fhem.readingsSingleUpdate(self.hash, "Map" , '<html><img src="data:image/png;base64,' + self.bot.map.get_base64_map(500).decode('ascii') + '"/></html>', 1)
+        asyncio.sleep(0.2)
+        self.set_map()
     # Attribute function format: set_attr_NAMEOFATTRIBUTE(self, hash)
     # self._attr_NAMEOFATTRIBUTE contains the new state
     async def set_attr_interval(self, hash):

@@ -156,7 +156,7 @@ class deebotozmofhem(generic.FhemModule):
         
         self.bot.events.battery.subscribe(on_battery)
         self.bot.events.battery.subscribe(on_map)
-        await self.bot.execute_command(GetCleanInfo())
+        await self.bot.execute_command(GetCleanLogs())
            
     async def set_clean(self, hash, params):
         await self.bot.execute_command(Clean(CleanAction.START))

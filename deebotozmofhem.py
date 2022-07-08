@@ -7,7 +7,7 @@ import debugpy
 import aiohttp
 from aiohttp import ClientError
 from deebotozmo.ecovacs_api import EcovacsAPI
-from deebotozmo.commands import (Charge, GetCachedMapInfo, GetStats, GetPos, GetCleanLogs, GetCleanInfo, GetMajorMap)
+from deebotozmo.commands import (Charge, Clean, GetCachedMapInfo, GetStats, GetPos, GetCleanLogs, GetCleanInfo, GetMajorMap)
 from deebotozmo.ecovacs_mqtt import EcovacsMqtt
 from deebotozmo.events import (BatteryEvent, MapEvent, StatsEvent, RoomsEvent)
 from deebotozmo.vacuum_bot import VacuumBot

@@ -197,7 +197,10 @@ class deebotozmofhem(generic.FhemModule):
     async def display_loop(self):
         while True:
             img = self.bot.map.get_base64_map(500).decode('ascii')
-            await fhem.readingsSingleUpdate(self.hash, "Map" , '<html><img src="data:image/png;base64,' + img + '" width="500"/></html>', 1) 
+            #await fhem.readingsSingleUpdate(self.hash, "Map" , '<html><img src="data:image/png;base64,' + img + '" width="500"/></html>', 1) 
+            await fhem.readingsSingleUpdate(self.hash, "Map" , 'Map', 1) 
+            
+
     # Attribute function format: set_attr_NAMEOFATTRIBUTE(self, hash)
     # self._attr_NAMEOFATTRIBUTE contains the new state
     async def set_attr_interval(self, hash):

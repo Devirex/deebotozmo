@@ -160,10 +160,6 @@ class deebotozmofhem(generic.FhemModule):
         async def on_stats(event: StatsEvent):
             await fhem.readingsSingleUpdate(self.hash, "StatsEvent" , "StatsEvent", 1)
         
-
-        async def on_stats(event: StatsEvent):
-            await fhem.readingsSingleUpdate(self.hash, "StatsEvent" , "StatsEvent", 1)
-        
         async def on_status(event: StatusEvent):
             await fhem.readingsSingleUpdate(self.hash, "StatusEvent" , "StatusEvent", 1)
         
@@ -183,7 +179,7 @@ class deebotozmofhem(generic.FhemModule):
         self.bot.events.battery.subscribe(on_battery)
         self.bot.events.stats.subscribe(on_stats)
         self.bot.events.status.subscribe(on_status)
-        self.bot.events.waterinfo.subscribe(on_water)
+        self.bot.events.water_info.subscribe(on_water)
         self.bot.events.clean.subscribe(on_cleanLog)
         self.bot.events.rooms.subscribe(on_rooms)
         self.bot.events.map.request_refresh()

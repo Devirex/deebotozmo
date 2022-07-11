@@ -196,7 +196,7 @@ class deebotozmofhem(generic.FhemModule):
 
     async def display_loop(self):
         while True:
-            img = self.bot.map.get_base64_map(500).decode('ascii')
+            img = self.bot.map.get_base64_map(400).decode('ascii')
             #await fhem.readingsSingleUpdate(self.hash, "Map" , '<html><img src="data:image/png;base64,' + img + '" width="500"/></html>', 1) 
             await fhem.readingsSingleUpdate(self.hash, "Map" , 'Map', 1) 
             

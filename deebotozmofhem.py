@@ -9,7 +9,7 @@ from aiohttp import ClientError
 from deebotozmo.ecovacs_api import EcovacsAPI
 from deebotozmo.commands import (Charge, Clean, GetCachedMapInfo, GetStats, GetPos, GetCleanLogs, GetCleanInfo, GetMajorMap)
 from deebotozmo.ecovacs_mqtt import EcovacsMqtt
-from deebotozmo.events import (BatteryEvent, MapEvent, StatsEvent, RoomsEvent)
+from deebotozmo.events import (BatteryEvent, MapEvent, StatsEvent, StatusEvent, RoomsEvent, CleanLogEvent, WaterInfoEvent)
 from deebotozmo.vacuum_bot import VacuumBot
 from deebotozmo.util import md5
 from deebotozmo.commands.clean import CleanAction
@@ -147,16 +147,45 @@ class deebotozmofhem(generic.FhemModule):
             # Do stuff on battery event
             # Battery full
             await fhem.readingsSingleUpdate(self.hash, "Battery", event.value , 1)
+
             pass
         
         async def on_map(_: MapEvent) -> None:
             # Do stuff on battery event
             # Battery full
             #await fhem.readingsSingleUpdate(self.hash, "Map" , '<html><img src="data:image/png;base64,' + self.bot.map.get_base64_map(500).decode('ascii') + '"/></html>', 1)
+            await fhem.readingsSingleUpdate(self.hash, "MapEvent" , "MapEvent", 1)
             pass
+
+        async def on_stats(event: StatsEvent):
+            await fhem.readingsSingleUpdate(self.hash, "StatsEvent" , "StatsEvent", 1)
+        
+
+        async def on_stats(event: StatsEvent):
+            await fhem.readingsSingleUpdate(self.hash, "StatsEvent" , "StatsEvent", 1)
+        
+        async def on_status(event: StatusEvent):
+            await fhem.readingsSingleUpdate(self.hash, "StatusEvent" , "StatusEvent", 1)
+        
+
+        async def on_water(event: WaterInfoEvent):
+            await fhem.readingsSingleUpdate(self.hash, "WaterInfoEvent" , "WaterInfoEvent", 1)
+        
+
+        async def on_cleanLog(event: CleanLogEvent):
+            await fhem.readingsSingleUpdate(self.hash, "CleanLogEvent" , "CleanLogEvent", 1)
+
+        async def on_rooms(event: RoomsEvent):
+            await fhem.readingsSingleUpdate(self.hash, "RoomsEvent" , "RoomsEvent", 1)
+        
 
         self.bot.events.map.subscribe(on_map)
         self.bot.events.battery.subscribe(on_battery)
+        self.bot.events.stats.subscribe(on_stats)
+        self.bot.events.status.subscribe(on_status)
+        self.bot.events.waterinfo.subscribe(on_water)
+        self.bot.events.clean.subscribe(on_cleanLog)
+        self.bot.events.rooms.subscribe(on_rooms)
         self.bot.events.map.request_refresh()
         await self.bot.execute_command(GetCleanInfo())
            

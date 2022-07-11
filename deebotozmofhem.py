@@ -180,7 +180,7 @@ class deebotozmofhem(generic.FhemModule):
         self.bot.events.stats.subscribe(on_stats)
         self.bot.events.status.subscribe(on_status)
         self.bot.events.water_info.subscribe(on_water)
-        self.bot.events.clean.subscribe(on_cleanLog)
+        self.bot.events.clean_log.subscribe(on_cleanLog)
         self.bot.events.rooms.subscribe(on_rooms)
         self.bot.events.map.request_refresh()
         await self.bot.execute_command(GetCleanInfo())

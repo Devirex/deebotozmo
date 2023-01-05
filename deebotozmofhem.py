@@ -57,6 +57,10 @@ class deebotozmofhem(generic.FhemModule):
             "desiredTemp": {"args": ["temperature"], "options": "slider,10,1,30"},
             "clean":{},
             "clean_no_wc_2x":{},
+            "clean_all_2x":{},
+            "clean_no_wc":{},
+            "clean_all":{},
+            "clean_coffecorner":{},
             "charge":{},
             "map":{},
             "holidayMode": {
@@ -173,10 +177,16 @@ class deebotozmofhem(generic.FhemModule):
             pass
 
         async def on_stats(event: StatsEvent):
-            await fhem.readingsSingleUpdate(self.hash, "StatsEvent" , "StatsEvent", 1)
+            Stats = ""
+            for element in event:
+                Stats = element.split(',')
+            await fhem.readingsSingleUpdate(self.hash, "StatsEvent" , Stats, 1)
         
         async def on_status(event: StatusEvent):
-            await fhem.readingsSingleUpdate(self.hash, "StatusEvent" , "StatusEvent", 1)
+            Status = ""
+            for element in event:
+                Status = element.split(',')
+            await fhem.readingsSingleUpdate(self.hash, "StatusEvent" , Status, 1)
         
 
         async def on_water(event: WaterInfoEvent):
@@ -184,7 +194,10 @@ class deebotozmofhem(generic.FhemModule):
         
 
         async def on_cleanLog(event: CleanLogEvent):
-            await fhem.readingsSingleUpdate(self.hash, "CleanLogEvent" , "CleanLogEvent", 1)
+            CleanLog = ""
+            for element in event:
+                CleanLog = element.split(',')
+            await fhem.readingsSingleUpdate(self.hash, "CleanLogEvent" , CleanLog, 1)
 
         async def on_rooms(event: RoomsEvent):
             RoomInfo = ""
@@ -208,6 +221,18 @@ class deebotozmofhem(generic.FhemModule):
 
     async def set_clean_no_wc_2x(self, hash, params):
         await self.bot.execute_command(CleanArea(CleanMode.SpotArea, [0,1,2,3,5], 2))
+
+    async def set_clean_all_2x(self, hash, params):
+        await self.bot.execute_command(CleanArea(CleanMode.SpotArea, [0,1,2,3,4,5], 2))
+
+    async def set_clean_no_wc(self, hash, params):
+        await self.bot.execute_command(CleanArea(CleanMode.SpotArea, [0,1,2,3,5], 1))
+    
+    async def set_clean_all(self, hash, params):
+        await self.bot.execute_command(CleanArea(CleanMode.SpotArea, [0,1,2,3,4,5], 1))
+
+    async def set_clean_coffecorner(self, hash, params):
+        await self.bot.execute_command(CleanArea(CleanMode.SpotArea, [0,1,2,3,4,5], 1))
 
     async def set_charge(self, hash, params):
         await self.bot.execute_command(Charge())

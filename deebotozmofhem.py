@@ -7,12 +7,12 @@ import debugpy
 import aiohttp
 from aiohttp import ClientError
 from deebotozmo.ecovacs_api import EcovacsAPI
-from deebotozmo.commands import (Charge, Clean, GetCachedMapInfo, GetStats, GetPos, GetCleanLogs, GetCleanInfo, GetMajorMap)
+from deebotozmo.commands import (Charge, Clean, CleanArea, GetCachedMapInfo, GetStats, GetPos, GetCleanLogs, GetCleanInfo, GetMajorMap)
 from deebotozmo.ecovacs_mqtt import EcovacsMqtt
 from deebotozmo.events import (BatteryEvent, MapEvent, StatsEvent, StatusEvent, RoomsEvent, CleanLogEvent, WaterInfoEvent)
 from deebotozmo.vacuum_bot import VacuumBot
 from deebotozmo.util import md5
-from deebotozmo.commands.clean import CleanAction
+from deebotozmo.commands.clean import CleanAction, CleanMode
 import random
 import string
 
@@ -30,13 +30,18 @@ class deebotozmofhem(generic.FhemModule):
                 "default": "",
                 "format": "string",
                 "help": "Set Username with Login Command",
+            },
+            "botid": {
+                "default": "0",
+                "format": "string",
+                "help": "ID of the Bot",
             }
         }
         self.set_attr_config(attr_config)
 
         set_config = {
             "login": {
-                "args": ["username", "password"],
+                "args": ["username", "password","botid"],
                 "params": {
                     "username": {"default":"username", "format": "string"},
                     "password": {"default":"password", "format": "string"}   
@@ -141,7 +146,7 @@ class deebotozmofhem(generic.FhemModule):
         await fhem.readingsSingleUpdate(self.hash, "devices", len(devices_) , 1)
 
         auth = await api.get_request_auth()
-        self.bot = VacuumBot(self.session, auth, devices_[0], continent=continent, country=country, verify_ssl=False)
+        self.bot = VacuumBot(self.session, auth, devices_[self.hash['botid']], continent=continent, country=country, verify_ssl=False)
         mqtt = EcovacsMqtt(continent=continent, country=country)
         await mqtt.initialize(auth)
         await mqtt.subscribe(self.bot)
@@ -192,7 +197,7 @@ class deebotozmofhem(generic.FhemModule):
         await self.bot.execute_command(Clean(CleanAction.START))
 
     async def set_clean_no_wc_2x(self, hash, params):
-        await self.bot.execute_command(CleanArea(CleanMode.SpotArea, [1,2], 2))
+        await self.bot.execute_command(CleanArea(CleanMode.SpotArea, [0], 2))
 
     async def set_charge(self, hash, params):
         await self.bot.execute_command(Charge())

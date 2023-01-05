@@ -9,7 +9,7 @@ from aiohttp import ClientError
 from deebotozmo.ecovacs_api import EcovacsAPI
 from deebotozmo.commands import (Charge, Clean, CleanArea, GetCachedMapInfo, GetStats, GetPos, GetCleanLogs, GetCleanInfo, GetMajorMap)
 from deebotozmo.ecovacs_mqtt import EcovacsMqtt
-from deebotozmo.events import (BatteryEvent, MapEvent, StatsEvent, StatusEvent, RoomsEvent, CleanLogEvent, WaterInfoEvent)
+from deebotozmo.events import (BatteryEvent, MapEvent, StatsEvent, StatusEvent, RoomsEvent, CleanLogEvent, WaterInfoEvent, CustomCommandEvent)
 from deebotozmo.vacuum_bot import VacuumBot
 from deebotozmo.util import md5
 from deebotozmo.commands.clean import CleanAction, CleanMode
@@ -178,6 +178,9 @@ class deebotozmofhem(generic.FhemModule):
 
         async def on_stats(event: StatsEvent):
             await fhem.readingsSingleUpdate(self.hash, "StatsEvent" , "StatsEvent" , 1)
+
+        async def on_custom(event: CustomCommandEvent):
+            await fhem.readingsSingleUpdate(self.hash, "CustomCommandEvent" , "CustomCommandEvent" , 1)
         
         async def on_status(event: StatusEvent):
             await fhem.readingsSingleUpdate(self.hash, "StatusEvent" , "StatusEvent", 1)
@@ -196,7 +199,7 @@ class deebotozmofhem(generic.FhemModule):
                 RoomInfo += "ID: " + str(room.id) + ", Name:" + room.subtype + "\n"
             await fhem.readingsSingleUpdate(self.hash, "RoomsEvent" , RoomInfo, 1)
         
-
+        self.bot.events.custom_commands.subscribe(on_custom)
         self.bot.events.map.subscribe(on_map)
         self.bot.events.battery.subscribe(on_battery)
         self.bot.events.stats.subscribe(on_stats)
@@ -205,6 +208,7 @@ class deebotozmofhem(generic.FhemModule):
         self.bot.events.clean_logs.subscribe(on_cleanLog)
         self.bot.events.rooms.subscribe(on_rooms)
         self.bot.events.map.request_refresh()
+        
         await self.bot.execute_command(GetCleanInfo())
            
     async def set_clean(self, hash, params):

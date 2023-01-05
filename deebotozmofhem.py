@@ -146,7 +146,8 @@ class deebotozmofhem(generic.FhemModule):
         await fhem.readingsSingleUpdate(self.hash, "devices", len(devices_) , 1)
         deviceInfo = ""
         for idx, device in enumerate(devices_):
-            deviceInfo = deviceInfo +  "ID: " + idx + ", Name:" + device.nick + ", Devicename: " + device.device_name + " \n"
+            deviceInfo = (deviceInfo +  "ID: " + idx + ", Name:" + device.nick + ", Devicename: " + device.device_name + " \n")
+            temp = "test"
  
         await fhem.readingsSingleUpdate(self.hash, "deviceInfo", deviceInfo , 1)
 

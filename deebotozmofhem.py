@@ -51,6 +51,7 @@ class deebotozmofhem(generic.FhemModule):
             },
             "desiredTemp": {"args": ["temperature"], "options": "slider,10,1,30"},
             "clean":{},
+            "clean_no_wc_2x":{},
             "charge":{},
             "map":{},
             "holidayMode": {
@@ -189,6 +190,9 @@ class deebotozmofhem(generic.FhemModule):
            
     async def set_clean(self, hash, params):
         await self.bot.execute_command(Clean(CleanAction.START))
+
+    async def set_clean_no_wc_2x(self, hash, params):
+        await self.bot.execute_command(CleanArea(CleanMode.SpotArea, [1,2], 2))
 
     async def set_charge(self, hash, params):
         await self.bot.execute_command(Charge())

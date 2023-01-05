@@ -187,7 +187,10 @@ class deebotozmofhem(generic.FhemModule):
             await fhem.readingsSingleUpdate(self.hash, "CleanLogEvent" , "CleanLogEvent", 1)
 
         async def on_rooms(event: RoomsEvent):
-            await fhem.readingsSingleUpdate(self.hash, "RoomsEvent" , "RoomsEvent", 1)
+            RoomInfo = ""
+            for room in event.rooms:
+                RoomInfo += "ID: " + str(room.id) + ", Name:" + room.subtype + "\n"
+            await fhem.readingsSingleUpdate(self.hash, "RoomsEvent" , RoomInfo, 1)
         
 
         self.bot.events.map.subscribe(on_map)
@@ -204,7 +207,7 @@ class deebotozmofhem(generic.FhemModule):
         await self.bot.execute_command(Clean(CleanAction.START))
 
     async def set_clean_no_wc_2x(self, hash, params):
-        await self.bot.execute_command(CleanArea(CleanMode.SpotArea, [0], 2))
+        await self.bot.execute_command(CleanArea(CleanMode.SpotArea, [0,1,3,4,5], 2))
 
     async def set_charge(self, hash, params):
         await self.bot.execute_command(Charge())

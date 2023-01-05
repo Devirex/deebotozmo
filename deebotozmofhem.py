@@ -179,8 +179,6 @@ class deebotozmofhem(generic.FhemModule):
         async def on_stats(event: StatsEvent):
             await fhem.readingsSingleUpdate(self.hash, "StatsEvent" , "StatsEvent" , 1)
 
-        async def on_custom(event: CustomCommandEvent):
-            await fhem.readingsSingleUpdate(self.hash, "CustomCommandEvent" , "CustomCommandEvent" , 1)
         
         async def on_status(event: StatusEvent):
             await fhem.readingsSingleUpdate(self.hash, "StatusEvent" , "StatusEvent", 1)
@@ -199,7 +197,6 @@ class deebotozmofhem(generic.FhemModule):
                 RoomInfo += "ID: " + str(room.id) + ", Name:" + room.subtype + "\n"
             await fhem.readingsSingleUpdate(self.hash, "RoomsEvent" , RoomInfo, 1)
         
-        self.bot.events.custom_commands.subscribe(on_custom)
         self.bot.events.map.subscribe(on_map)
         self.bot.events.battery.subscribe(on_battery)
         self.bot.events.stats.subscribe(on_stats)

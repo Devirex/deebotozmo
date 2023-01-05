@@ -177,16 +177,10 @@ class deebotozmofhem(generic.FhemModule):
             pass
 
         async def on_stats(event: StatsEvent):
-            Stats = ""
-            for element in event:
-                Stats = element.split(',')
-            await fhem.readingsSingleUpdate(self.hash, "StatsEvent" , Stats, 1)
+            await fhem.readingsSingleUpdate(self.hash, "StatsEvent" , "StatsEvent" , 1)
         
         async def on_status(event: StatusEvent):
-            Status = ""
-            for element in event:
-                Status = element.split(',')
-            await fhem.readingsSingleUpdate(self.hash, "StatusEvent" , Status, 1)
+            await fhem.readingsSingleUpdate(self.hash, "StatusEvent" , "StatusEvent", 1)
         
 
         async def on_water(event: WaterInfoEvent):
@@ -194,10 +188,7 @@ class deebotozmofhem(generic.FhemModule):
         
 
         async def on_cleanLog(event: CleanLogEvent):
-            CleanLog = ""
-            for element in event:
-                CleanLog = element.split(',')
-            await fhem.readingsSingleUpdate(self.hash, "CleanLogEvent" , CleanLog, 1)
+            await fhem.readingsSingleUpdate(self.hash, "CleanLogEvent" , "CleanLogEvent", 1)
 
         async def on_rooms(event: RoomsEvent):
             RoomInfo = ""

@@ -152,7 +152,7 @@ class deebotozmofhem(generic.FhemModule):
         await fhem.readingsSingleUpdate(self.hash, "deviceInfo", deviceInfo , 1)
 
         auth = await api.get_request_auth()
-        self.bot = VacuumBot(self.session, auth, devices_[self._attr_botid], continent=continent, country=country, verify_ssl=False)
+        self.bot = VacuumBot(self.session, auth, devices_[int(self._attr_botid)], continent=continent, country=country, verify_ssl=False)
         mqtt = EcovacsMqtt(continent=continent, country=country)
         await mqtt.initialize(auth)
         await mqtt.subscribe(self.bot)

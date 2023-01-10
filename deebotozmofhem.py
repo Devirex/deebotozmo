@@ -25,7 +25,7 @@ from .. import generic
 
 class deebotozmofhem(generic.FhemModule):
     def __init__(self, logger):
-        logger.setLevel(logging.DEBUG)
+        logging.root.setLevel(logging.DEBUG)
         super().__init__(logger)
 
         attr_config = {
@@ -87,6 +87,7 @@ class deebotozmofhem(generic.FhemModule):
         self.session = None
         self.cipher_suite = Fernet(base64.urlsafe_b64encode(uuid.UUID(int=uuid.getnode()).bytes * 2))
         debugpy.listen(("192.168.1.50",1107))
+        
     
     # FHEM FUNCTION
     async def Define(self, hash, args, argsh):

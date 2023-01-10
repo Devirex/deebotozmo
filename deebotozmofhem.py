@@ -33,11 +33,6 @@ class deebotozmofhem(generic.FhemModule):
                 "format": "string",
                 "help": "Set Username with Login Command",
             },
-            "botid": {
-                "default": "0",
-                "format": "string",
-                "help": "ID of the Bot",
-            },
             "areas":{
                 "default": "0,Kaffee,-4849.000000,-1569.000000,-3548.000000,-2373.000000;",
                 "format": "string",
@@ -53,7 +48,7 @@ class deebotozmofhem(generic.FhemModule):
 
         set_config = {
             "login": {
-                "args": ["username", "password","botid"],
+                "args": ["username", "password"],
                 "params": {
                     "username": {"default":"username", "format": "string"},
                     "password": {"default":"password", "format": "string"}   
@@ -69,8 +64,12 @@ class deebotozmofhem(generic.FhemModule):
             "desiredTemp": {"args": ["temperature"], "options": "slider,10,1,30"},
             "clean":{},
             "clean_custom_area":{
-                "args": ["area"],
-                "params":  { "area" : { "default" : "0", "foramat": "string"}}
+                "args": ["bot","area"],
+                "parms":  { 
+                    "bot" : {},
+                    "area" : { "default" : "0", "foramat": "string"}
+                    },
+                "options": "hy,cl"
             },
             "clean_spot_areas":{
                 "args": ["areas"],

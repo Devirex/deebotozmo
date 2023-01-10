@@ -51,7 +51,7 @@ class deebotozmofhem(generic.FhemModule):
         }
         self.set_attr_config(attr_config)
 
-        self.set_config = {
+        set_config = {
             "login": {
                 "args": ["username", "password","botid"],
                 "params": {
@@ -61,7 +61,7 @@ class deebotozmofhem(generic.FhemModule):
             },
             "connect":{}
         }
-        self.set_set_config(self.set_config)
+        self.set_set_config(set_config)
         self.session = None
         self.cipher_suite = Fernet(base64.urlsafe_b64encode(uuid.UUID(int=uuid.getnode()).bytes * 2))
         debugpy.listen(("192.168.1.50",1107))
@@ -187,7 +187,7 @@ class deebotozmofhem(generic.FhemModule):
         self.bot.events.clean_logs.subscribe(on_cleanLog)
         self.bot.events.rooms.subscribe(on_rooms)
         self.bot.events.map.request_refresh()
-        set_config = self.set_config + {
+        set_config = self._set_config + {
             "clean":{},
             "clean_custom_area":{
                 "args": ["area"],

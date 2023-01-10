@@ -97,6 +97,7 @@ class deebotozmofhem(generic.FhemModule):
         }
         self.set_set_config(set_config)
         self.session = None
+        self.bots = []
         self.cipher_suite = Fernet(base64.urlsafe_b64encode(uuid.UUID(int=uuid.getnode()).bytes * 2))
         debugpy.listen(("192.168.1.50",1107))
         
@@ -167,7 +168,7 @@ class deebotozmofhem(generic.FhemModule):
         deviceInfo = ""
         auth = await api.get_request_auth()
         for idx, device in enumerate(devices_):
-            self.bot.append(VacuumBot(self.session, auth, device, continent=continent, country=country, verify_ssl=False))
+            self.bots.append(VacuumBot(self.session, auth, device, continent=continent, country=country, verify_ssl=False))
             deviceInfo += "ID: " + str(idx) + ", Name:" + device.nick + ", Devicename: " + device.device_name + "\n"
         await fhem.readingsSingleUpdate(self.hash, "deviceInfo", deviceInfo , 1)
 

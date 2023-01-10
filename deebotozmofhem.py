@@ -223,7 +223,7 @@ class deebotozmofhem(generic.FhemModule):
 
     async def set_clean_custom_area(self, hash, params):
         id = int(params['area'])
-        areas = self.hash['area'].split(';')
+        areas = self._attr_area.split(';')
         for area in areas:
             areaValues = area.split(',')
             if areaValues[0] == id:

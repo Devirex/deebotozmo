@@ -188,40 +188,40 @@ class deebotozmofhem(generic.FhemModule):
                 # Do stuff on battery event
                 # Battery full
                 #await fhem.readingsSingleUpdate(self.hash, "Map" , '<html><img src="data:image/png;base64,' + self.bot.map.get_base64_map(500).decode('ascii') + '"/></html>', 1)
-                await fhem.readingsSingleUpdate(self.hash, "MapEvent" , "MapEvent", 1)
+                await fhem.readingsSingleUpdate(self.hash, "MapEvent" + bot.nick , "MapEvent", 1)
                 pass
 
             async def on_stats(event: StatsEvent):
-                await fhem.readingsSingleUpdate(self.hash, "StatsEvent" , "StatsEvent" , 1)
+                await fhem.readingsSingleUpdate(self.hash, "StatsEvent" + bot.nick, "StatsEvent" , 1)
 
             
             async def on_status(event: StatusEvent):
-                await fhem.readingsSingleUpdate(self.hash, "StatusEvent" , "StatusEvent", 1)
+                await fhem.readingsSingleUpdate(self.hash, "StatusEvent" + bot.nick, "StatusEvent", 1)
             
 
             async def on_water(event: WaterInfoEvent):
-                await fhem.readingsSingleUpdate(self.hash, "WaterInfoEvent" , "WaterInfoEvent", 1)
+                await fhem.readingsSingleUpdate(self.hash, "WaterInfoEvent" + bot.nick, "WaterInfoEvent", 1)
             
 
             async def on_cleanLog(event: CleanLogEvent):
-                await fhem.readingsSingleUpdate(self.hash, "CleanLogEvent" , "CleanLogEvent", 1)
+                await fhem.readingsSingleUpdate(self.hash, "CleanLogEvent" + bot.nick, "CleanLogEvent", 1)
 
             async def on_rooms(event: RoomsEvent):
                 RoomInfo = ""
                 for room in event.rooms:
                     RoomInfo += "ID: " + str(room.id) + ", Name:" + room.subtype + "\n"
-                await fhem.readingsSingleUpdate(self.hash, "RoomsEvent" , RoomInfo, 1)
+                await fhem.readingsSingleUpdate(self.hash, "RoomsEvent" + bot.nick , RoomInfo, 1)
             
-            self.bot.events.map.subscribe(on_map)
-            self.bot.events.battery.subscribe(on_battery)
-            self.bot.events.stats.subscribe(on_stats)
-            self.bot.events.status.subscribe(on_status)
-            self.bot.events.water_info.subscribe(on_water)
-            self.bot.events.clean_logs.subscribe(on_cleanLog)
-            self.bot.events.rooms.subscribe(on_rooms)
-            self.bot.events.map.request_refresh()
+            bot.events.map.subscribe(on_map)
+            bot.events.battery.subscribe(on_battery)
+            bot.events.stats.subscribe(on_stats)
+            bot.events.status.subscribe(on_status)
+            bot.events.water_info.subscribe(on_water)
+            bot.events.clean_logs.subscribe(on_cleanLog)
+            bot.events.rooms.subscribe(on_rooms)
+            bot.events.map.request_refresh()
             
-            await self.bot.execute_command(GetCleanInfo())
+            await bot.execute_command(GetCleanInfo())
            
     async def set_clean(self, hash, params):
         await self.bot.execute_command(Clean(CleanAction.START))

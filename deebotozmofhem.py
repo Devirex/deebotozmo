@@ -226,7 +226,7 @@ class deebotozmofhem(generic.FhemModule):
         areas = self._attr_areas.split(';')
         for area in areas:
             areaValues = area.split(',')
-            if areaValues[0] == id:
+            if int(areaValues[0]) == id:
                 await self.bot.execute_command(CleanArea(CleanMode.CUSTOM_AREA, areaValues[2] + "," + areaValues[3] + "," + areaValues[4] + "," +areaValues[5], 1))
 
     async def set_charge(self, hash, params):

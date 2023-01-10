@@ -25,7 +25,6 @@ from .. import generic
 
 class deebotozmofhem(generic.FhemModule):
     def __init__(self, logger):
-        logging.root.setLevel(logging.DEBUG)
         super().__init__(logger)
 
         attr_config = {

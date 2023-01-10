@@ -181,36 +181,36 @@ class deebotozmofhem(generic.FhemModule):
             async def on_battery(event: BatteryEvent):
                 # Do stuff on battery event
                 # Battery full
-                await fhem.readingsSingleUpdate(self.hash, "Battery-" + bot.nick, event.value , 1)
+                await fhem.readingsSingleUpdate(self.hash, "Battery-" + bot.vacuum.nick, event.value , 1)
                 pass
             
             async def on_map(_: MapEvent) -> None:
                 # Do stuff on battery event
                 # Battery full
                 #await fhem.readingsSingleUpdate(self.hash, "Map" , '<html><img src="data:image/png;base64,' + self.bot.map.get_base64_map(500).decode('ascii') + '"/></html>', 1)
-                await fhem.readingsSingleUpdate(self.hash, "MapEvent" + bot.nick , "MapEvent", 1)
+                await fhem.readingsSingleUpdate(self.hash, "MapEvent" + bot.vacuum.nick , "MapEvent", 1)
                 pass
 
             async def on_stats(event: StatsEvent):
-                await fhem.readingsSingleUpdate(self.hash, "StatsEvent" + bot.nick, "StatsEvent" , 1)
+                await fhem.readingsSingleUpdate(self.hash, "StatsEvent" +  bot.vacuum.nick, "StatsEvent" , 1)
 
             
             async def on_status(event: StatusEvent):
-                await fhem.readingsSingleUpdate(self.hash, "StatusEvent" + bot.nick, "StatusEvent", 1)
+                await fhem.readingsSingleUpdate(self.hash, "StatusEvent" +  bot.vacuum.nick, "StatusEvent", 1)
             
 
             async def on_water(event: WaterInfoEvent):
-                await fhem.readingsSingleUpdate(self.hash, "WaterInfoEvent" + bot.nick, "WaterInfoEvent", 1)
+                await fhem.readingsSingleUpdate(self.hash, "WaterInfoEvent" +  bot.vacuum.nick, "WaterInfoEvent", 1)
             
 
             async def on_cleanLog(event: CleanLogEvent):
-                await fhem.readingsSingleUpdate(self.hash, "CleanLogEvent" + bot.nick, "CleanLogEvent", 1)
+                await fhem.readingsSingleUpdate(self.hash, "CleanLogEvent" +  bot.vacuum.nick, "CleanLogEvent", 1)
 
             async def on_rooms(event: RoomsEvent):
                 RoomInfo = ""
                 for room in event.rooms:
                     RoomInfo += "ID: " + str(room.id) + ", Name:" + room.subtype + "\n"
-                await fhem.readingsSingleUpdate(self.hash, "RoomsEvent" + bot.nick , RoomInfo, 1)
+                await fhem.readingsSingleUpdate(self.hash, "RoomsEvent" +  bot.vacuum.nick , RoomInfo, 1)
             
             bot.events.map.subscribe(on_map)
             bot.events.battery.subscribe(on_battery)

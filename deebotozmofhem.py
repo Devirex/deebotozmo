@@ -53,7 +53,7 @@ class deebotozmofhem(generic.FhemModule):
 
         set_config = {
             "login": {
-                "args": ["username", "password","botid"],
+                "args": ["username", "password"],
                 "params": {
                     "username": {"default":"username", "format": "string"},
                     "password": {"default":"password", "format": "string"}   
@@ -187,7 +187,7 @@ class deebotozmofhem(generic.FhemModule):
         self.bot.events.clean_logs.subscribe(on_cleanLog)
         self.bot.events.rooms.subscribe(on_rooms)
         self.bot.events.map.request_refresh()
-        set_config = self._conf_set.update({
+        self._conf_set.update({
             "clean":{},
             "clean_custom_area":{
                 "args": ["area"],
@@ -200,7 +200,6 @@ class deebotozmofhem(generic.FhemModule):
             "charge":{},
             "map":{}
         })
-        self.set_set_config(set_config);
         
         await self.bot.execute_command(GetCleanInfo())
            

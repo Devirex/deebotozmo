@@ -47,7 +47,12 @@ class deebotozmofhem(generic.FhemModule):
                 "default": "1",
                 "format": "string",
                 "help": "Number of cleaning runs",
-            }
+            },
+            "autoconnect":{
+                "default": "off",
+                "options": "on,off",
+                "help": "Automatic connection",
+            },
         }
         self.set_attr_config(attr_config)
 
@@ -73,6 +78,8 @@ class deebotozmofhem(generic.FhemModule):
         await fhem.readingsBeginUpdate(hash)
         await fhem.readingsBulkUpdateIfChanged(hash, "state", "on")
         await fhem.readingsEndUpdate(hash, 1)
+        if self._attr_autoconnect == "on":
+            self.set_connect(self)
 
     async def set_password(self, hash, params):
         # user can specify mode as mode=eco or just eco as argument

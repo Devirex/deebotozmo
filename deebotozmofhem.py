@@ -80,7 +80,7 @@ class deebotozmofhem(generic.FhemModule):
         await fhem.readingsBulkUpdateIfChanged(hash, "state", "on")
         await fhem.readingsEndUpdate(hash, 1)
         if self._attr_autoconnect == "on":
-            await self.set_connect(hash)
+            await self.set_connect(hash, '')
             debugpy.listen(("192.168.1.50",1108))
 
 
@@ -91,7 +91,7 @@ class deebotozmofhem(generic.FhemModule):
         ciphered_text = await self.write_password(hash,password.encode()) 
         await fhem.readingsSingleUpdate(hash, "password", ciphered_text, 1)
         
-    async def set_connect(self, hash):
+    async def set_connect(self, hash, params):
         try: 
             self.username = self.hash['username']
             if self.username == "null":

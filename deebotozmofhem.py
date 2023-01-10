@@ -63,11 +63,10 @@ class deebotozmofhem(generic.FhemModule):
             },
             "desiredTemp": {"args": ["temperature"], "options": "slider,10,1,30"},
             "clean":{},
-            "clean_no_wc_2x":{},
-            "clean_all_2x":{},
-            "clean_no_wc":{},
-            "clean_all":{},
-            "clean_coffecorner":{},
+            "clean_custom_area":{
+                "args": ["area"],
+                "params":  { "area" : { "default" : "0", "foramat": "string"}}
+            },
             "charge":{},
             "map":{},
             "holidayMode": {

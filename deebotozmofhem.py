@@ -42,6 +42,11 @@ class deebotozmofhem(generic.FhemModule):
                 "default": "0,Kaffee,-4849.000000,-1569.000000,-3548.000000,-2373.000000;",
                 "format": "string",
                 "help": "Custom Areas in Format ID,Name,x1,y1,x2,y2;",
+            },
+            "cleanings":{
+                "default": "1",
+                "format": "string",
+                "help": "Number of cleaning runs",
             }
         }
         self.set_attr_config(attr_config)
@@ -64,6 +69,10 @@ class deebotozmofhem(generic.FhemModule):
             "desiredTemp": {"args": ["temperature"], "options": "slider,10,1,30"},
             "clean":{},
             "clean_custom_area":{
+                "args": ["area"],
+                "params":  { "areas" : { "default" : "0", "foramat": "string"}}
+            },
+            "clean_spot_area":{
                 "args": ["area"],
                 "params":  { "area" : { "default" : "0", "foramat": "string"}}
             },
@@ -219,7 +228,7 @@ class deebotozmofhem(generic.FhemModule):
         await self.bot.execute_command(Clean(CleanAction.START))
 
     async def set_clean_spot_area(self, hash, params):
-        await self.bot.execute_command(CleanArea(CleanMode.SPOT, params, 2))
+        await self.bot.execute_command(CleanArea(CleanMode.SPOT_AREA, params['areas'] , self._attr_cleanings))
 
     async def set_clean_custom_area(self, hash, params):
         id = int(params['area'])
@@ -227,7 +236,7 @@ class deebotozmofhem(generic.FhemModule):
         for area in areas:
             areaValues = area.split(',')
             if int(areaValues[0]) == id:
-                await self.bot.execute_command(CleanArea(CleanMode.CUSTOM_AREA, areaValues[2] + "," + areaValues[3] + "," + areaValues[4] + "," +areaValues[5], 1))
+                await self.bot.execute_command(CleanArea(CleanMode.CUSTOM_AREA, areaValues[2] + "," + areaValues[3] + "," + areaValues[4] + "," +areaValues[5], self._attr_cleanings))
 
     async def set_charge(self, hash, params):
         await self.bot.execute_command(Charge())

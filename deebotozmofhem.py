@@ -70,11 +70,11 @@ class deebotozmofhem(generic.FhemModule):
             "clean":{},
             "clean_custom_area":{
                 "args": ["area"],
-                "params":  { "areas" : { "default" : "0", "foramat": "string"}}
-            },
-            "clean_spot_area":{
-                "args": ["area"],
                 "params":  { "area" : { "default" : "0", "foramat": "string"}}
+            },
+            "clean_spot_areas":{
+                "args": ["areas"],
+                "params":  { "areas" : { "default" : "0", "foramat": "string"}}
             },
             "charge":{},
             "map":{},

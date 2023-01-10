@@ -134,14 +134,15 @@ class deebotozmofhem(generic.FhemModule):
             await fhem.readingsSingleUpdate(self.hash, "state", e.args[0] , 1)
             self.session = None
 
-        await fhem.readingsSingleUpdate(self.hash, "Anmeldung", "connected" , 1)
+        await fhem.readingsSingleUpdate(self.hash, "state", "connected" , 1)
         devices_ = await api.get_devices()   
+        await fhem.readingsSingleUpdate(self.hash, "Devices", len(devices_) , 1)
         deviceInfo = ""
         for idx, device in enumerate(devices_):
-            deviceInfo += "ID: " + str(idx) + ", Name:" + device.nick + ", Gerätetyp: " + device.device_name + "\n"
+            deviceInfo += "ID: " + str(idx) + ", Name:" + device.nick + ", Devicename: " + device.device_name + "\n"
 
  
-        await fhem.readingsSingleUpdate(self.hash, "Geräte", deviceInfo , 1)
+        await fhem.readingsSingleUpdate(self.hash, "DeviceInfo", deviceInfo , 1)
 
         id = (int(self._attr_botid))
         auth = await api.get_request_auth()
@@ -153,7 +154,7 @@ class deebotozmofhem(generic.FhemModule):
         async def on_battery(event: BatteryEvent):
             # Do stuff on battery event
             # Battery full
-            await fhem.readingsSingleUpdate(self.hash, "Akkustand", event.value , 1)
+            await fhem.readingsSingleUpdate(self.hash, "Battery", event.value , 1)
 
             pass
         
@@ -165,28 +166,29 @@ class deebotozmofhem(generic.FhemModule):
             pass
 
         async def on_stats(event: StatsEvent):
+
             await fhem.readingsSingleUpdate(self.hash, "StatsEvent" , "StatsEvent" , 1)
 
         
         async def on_status(event: StatusEvent):
             if event.state == VacuumState.CLEANING:
-                status = "Reinigung"
+                status = "Cleaning"
             elif event.state == VacuumState.IDLE:
-                status = "Leerlauf"
+                status = "Idle"
             elif event.state == VacuumState.RETURNING:
-                status = "Zurückkehren"
+                status = "Returning"
             elif event.state == VacuumState.DOCKED:
-                status = "Laden"
+                status = "Docked"
             elif event.state == VacuumState.ERROR:
-                status = "Fehler"
+                status = "Error"
             elif event.state == VacuumState.PAUSED:
-                status = "Pause"
+                status = "Paused"
             await fhem.readingsSingleUpdate(self.hash, "Status" , status, 1)
         
 
         async def on_water(event: WaterInfoEvent):
-            await fhem.readingsSingleUpdate(self.hash, "Wischmodus" , event.mop_attached, 1)
-            await fhem.readingsSingleUpdate(self.hash, "Wasserstand" , event.amount, 1)
+            await fhem.readingsSingleUpdate(self.hash, "Wipermode" , event.mop_attached, 1)
+            await fhem.readingsSingleUpdate(self.hash, "Waterlevel" , event.amount, 1)
         
 
         async def on_cleanLog(event: CleanLogEvent):
@@ -196,7 +198,7 @@ class deebotozmofhem(generic.FhemModule):
             RoomInfo = ""
             for room in event.rooms:
                 RoomInfo += "ID: " + str(room.id) + ", Name:" + room.subtype + "\n"
-            await fhem.readingsSingleUpdate(self.hash, "Räume" , RoomInfo, 1)
+            await fhem.readingsSingleUpdate(self.hash, "Rooms" , RoomInfo, 1)
         
         self.bot.events.map.subscribe(on_map)
         self.bot.events.battery.subscribe(on_battery)

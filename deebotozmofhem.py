@@ -187,7 +187,7 @@ class deebotozmofhem(generic.FhemModule):
         self.bot.events.clean_logs.subscribe(on_cleanLog)
         self.bot.events.rooms.subscribe(on_rooms)
         self.bot.events.map.request_refresh()
-        set_config = self._set_config + {
+        set_config = self._conf_set + {
             "clean":{},
             "clean_custom_area":{
                 "args": ["area"],

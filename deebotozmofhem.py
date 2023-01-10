@@ -79,6 +79,8 @@ class deebotozmofhem(generic.FhemModule):
                         "password": {"default":"password", "format": "string"}   
                     }
                 }
+            },
+            "bot2": {
             }
         }
 

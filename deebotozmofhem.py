@@ -46,34 +46,42 @@ class deebotozmofhem(generic.FhemModule):
         }
         self.set_attr_config(attr_config)
 
-        set_config = {
-            "login": {
-                "args": ["username", "password"],
-                "params": {
-                    "username": {"default":"username", "format": "string"},
-                    "password": {"default":"password", "format": "string"}   
+        # set_config = {
+        #     "login": {
+        #         "args": ["username", "password"],
+        #         "params": {
+        #             "username": {"default":"username", "format": "string"},
+        #             "password": {"default":"password", "format": "string"}   
+        #         }
+        #     },
+        #     "connect":{},
+        #     "clean":{},
+        #     "clean_custom_area":{
+        #         "args": ["bot","area"],
+        #         "parms":  { 
+        #             "bot" : {},
+        #             "area" : { "default" : "0", "foramat": "string"}
+        #         }
+        #     },
+        #     "clean_spot_areas":{
+        #         "args": ["areas"],
+        #         "params":  { "areas" : { "default" : "0", "foramat": "string"}}
+        #     },
+        #     "charge":{},
+        #     "map":{},
+        # }
+        set_config = { 
+            "bot": {
+                "login": {
+                    "args": ["username", "password"],
+                    "params": {
+                        "username": {"default":"username", "format": "string"},
+                        "password": {"default":"password", "format": "string"}   
+                    }
                 }
-            },
-            "connect":{},
-            "clean":{},
-            "clean_custom_area":{
-                "args": ["bot","area"],
-                "parms":  { 
-                    "bot" : {},
-                    "area" : { "default" : "0", "foramat": "string"}
-                },
-                "options": {
-                    "bot": "hy,cl",
-                    "area": ""
-                }
-            },
-            "clean_spot_areas":{
-                "args": ["areas"],
-                "params":  { "areas" : { "default" : "0", "foramat": "string"}}
-            },
-            "charge":{},
-            "map":{},
+            }
         }
+
         self.set_set_config(set_config)
         self.session = None
         self.bots = []

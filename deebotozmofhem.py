@@ -79,7 +79,7 @@ class deebotozmofhem(generic.FhemModule):
         await fhem.readingsBulkUpdateIfChanged(hash, "state", "on")
         await fhem.readingsEndUpdate(hash, 1)
         if self._attr_autoconnect == "on":
-            self.set_connect(hash)
+            await self.set_connect(hash)
 
     async def set_password(self, hash, params):
         # user can specify mode as mode=eco or just eco as argument

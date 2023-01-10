@@ -55,21 +55,17 @@ class deebotozmofhem(generic.FhemModule):
                 }
             },
             "connect":{},
-            "mode": {
-                "args": ["mode"],
-                "argsh": ["mode"],
-                "params": {"mode": {"default": "eco", "optional": False}},
-                "options": "eco,comfort",
-            },
-            "desiredTemp": {"args": ["temperature"], "options": "slider,10,1,30"},
             "clean":{},
             "clean_custom_area":{
                 "args": ["bot","area"],
                 "parms":  { 
                     "bot" : {},
                     "area" : { "default" : "0", "foramat": "string"}
-                    },
-                "options": "hy,cl"
+                },
+                "options": {
+                    "bot": "hy,cl",
+                    "area": ""
+                }
             },
             "clean_spot_areas":{
                 "args": ["areas"],
@@ -77,22 +73,6 @@ class deebotozmofhem(generic.FhemModule):
             },
             "charge":{},
             "map":{},
-            "holidayMode": {
-                "args": ["endday", "endtime", "temperature"],
-                "params": {
-                    "endday": {"default": "31.12.2030"},
-                    "endtime": {"default": "23:59"},
-                    "temperature": {"default": 21, "format": "int"},
-                },
-            },
-            "on": {
-                "args": ["seconds"],
-                "params": {
-                    "seconds": {"default": 0, "optional": True, "format": "int"}
-                },
-                "help": "Specify seconds as parameter to change to off after X seconds.",
-            },
-            "off": {},
         }
         self.set_set_config(set_config)
         self.session = None

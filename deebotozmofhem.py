@@ -79,7 +79,7 @@ class deebotozmofhem(generic.FhemModule):
         await fhem.readingsBulkUpdateIfChanged(hash, "state", "on")
         await fhem.readingsEndUpdate(hash, 1)
         if self._attr_autoconnect == "on":
-            self.set_connect(hash, '')
+            self.set_connect(hash)
 
     async def set_password(self, hash, params):
         # user can specify mode as mode=eco or just eco as argument
@@ -88,7 +88,7 @@ class deebotozmofhem(generic.FhemModule):
         ciphered_text = await self.write_password(hash,password.encode()) 
         await fhem.readingsSingleUpdate(hash, "password", ciphered_text, 1)
         
-    async def set_connect(self, hash, params):
+    async def set_connect(self, hash):
         try: 
             self.username = self.hash['username']
             if self.username == "null":
@@ -234,50 +234,3 @@ class deebotozmofhem(generic.FhemModule):
             await fhem.readingsSingleUpdate(self.hash, "Map" , '<html><img src="data:image/png;base64,' + img + '" width="400"/></html>', 1) 
             #await fhem.readingsSingleUpdate(self.hash, "Map" , 'Map', 1) 
             
-
-    # Attribute function format: set_attr_NAMEOFATTRIBUTE(self, hash)
-    # self._attr_NAMEOFATTRIBUTE contains the new state
-    async def set_attr_interval(self, hash):
-        # attribute was set to self._attr_interval
-        # you can use self._attr_interval already with the new variable
-        pass
-
-    # Set functions in format: set_NAMEOFSETFUNCTION(self, hash, params)
-    async def set_on(self, hash, params):
-        # params contains the keyword which was defined in set_list_conf for "on"
-        # if not provided by the user it will be "" as defined in set_list_conf (default = "" and optional = True)
-        seconds = params["seconds"]
-        if seconds != 0:
-            await fhem.readingsSingleUpdate(hash, "state", "on " + str(seconds), 1)
-        else:
-            await fhem.readingsSingleUpdate(hash, "state", "on", 1)
-
-    async def set_off(self, hash, params):
-        # no params argument here, as set_off doesn't have arguments defined in set_list_conf
-        await fhem.readingsSingleUpdate(hash, "state", "off", 1)
-        self.create_async_task(self.long_running_task())
-        return ""
-
-    async def long_running_task(self):
-        await asyncio.sleep(30)
-        await fhem.readingsSingleUpdate(self.hash, "state", "long running off", 1)
-
-    async def set_mode(self, hash, params):
-        # user can specify mode as mode=eco or just eco as argument
-        # params['mode'] contains the mode provided by user
-        mode = params["mode"]
-        await fhem.readingsSingleUpdate(hash, "mode", mode, 1)
-
-    async def set_desiredTemp(self, hash, params):
-        temp = params["temperature"]
-        await fhem.readingsSingleUpdate(hash, "mode", temp, 1)
-
-    async def set_holidayMode(self, hash, params):
-        start = params["start"]
-        end = params["end"]
-        temp = params["temperature"]
-        await fhem.readingsSingleUpdate(hash, "start", start, 1)
-        await fhem.readingsSingleUpdate(hash, "end", end, 1)
-        await fhem.readingsSingleUpdate(hash, "temp", temp, 1)
-
-    

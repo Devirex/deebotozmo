@@ -39,9 +39,9 @@ class deebotozmofhem(generic.FhemModule):
                 "help": "ID of the Bot",
             },
             "areas":{
-                "default": "0,Kaffee,-4849.000000,-1569.000000,-3548.000000,-2373.000000",
+                "default": "0,Kaffee,-4849.000000,-1569.000000,-3548.000000,-2373.000000;",
                 "format": "string",
-                "help": "Custom Areas in Format ID,Name,x1,y1,x2,y2",
+                "help": "Custom Areas in Format ID,Name,x1,y1,x2,y2;",
             }
         }
         self.set_attr_config(attr_config)
@@ -219,10 +219,15 @@ class deebotozmofhem(generic.FhemModule):
         await self.bot.execute_command(Clean(CleanAction.START))
 
     async def set_clean_spot_area(self, hash, params):
-        await self.bot.execute_command(CleanArea(CleanMode.CUSTOM_AREA, params, 2))
+        await self.bot.execute_command(CleanArea(CleanMode.SPOT, params, 2))
 
     async def set_clean_custom_area(self, hash, params):
-        await self.bot.execute_command(CleanArea(CleanMode.SPOT_AREA, params, 2))
+        id = int(params['area'])
+        areas = self.hash['area'].split(';')
+        for area in areas:
+            areaValues = area.split(',')
+            if areaValues[0] == id:
+                await self.bot.execute_command(CleanArea(CleanMode.CUSTOM_AREA, areaValues[2] + "," + areaValues[3] + "," + areaValues[4] + "," +areaValues[5], 1))
 
     async def set_charge(self, hash, params):
         await self.bot.execute_command(Charge())

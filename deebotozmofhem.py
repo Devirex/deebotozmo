@@ -219,20 +219,11 @@ class deebotozmofhem(generic.FhemModule):
     async def set_clean(self, hash, params):
         await self.bot.execute_command(Clean(CleanAction.START))
 
-    async def set_clean_no_wc_2x(self, hash, params):
-        await self.bot.execute_command(CleanArea(CleanMode.SpotArea, [0,1,2,3,5], 2))
+    async def set_clean_spot_area(self, hash, params):
+        await self.bot.execute_command(CleanArea(CleanMode.CUSTOM_AREA, params, 2))
 
-    async def set_clean_all_2x(self, hash, params):
-        await self.bot.execute_command(CleanArea(CleanMode.SpotArea, [0,1,2,3,4,5], 2))
-
-    async def set_clean_no_wc(self, hash, params):
-        await self.bot.execute_command(CleanArea(CleanMode.SpotArea, [0,1,2,3,5], 1))
-    
-    async def set_clean_all(self, hash, params):
-        await self.bot.execute_command(CleanArea(CleanMode.SpotArea, [0,1,2,3,4,5], 1))
-
-    async def set_clean_coffecorner(self, hash, params):
-        await self.bot.execute_command(CleanArea(CleanMode.SpotArea, [0,1,2,3,4,5], 1))
+    async def set_clean_custom_area(self, hash, params):
+        await self.bot.execute_command(CleanArea(CleanMode.SPOT_AREA, params, 2))
 
     async def set_charge(self, hash, params):
         await self.bot.execute_command(Charge())

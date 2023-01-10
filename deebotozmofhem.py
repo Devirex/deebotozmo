@@ -175,7 +175,7 @@ class deebotozmofhem(generic.FhemModule):
         mqtt = EcovacsMqtt(continent=continent, country=country)
         await mqtt.initialize(auth)
 
-        for idx, bot in enumerate(self.bot):
+        for idx, bot in enumerate(self.bots):
             await mqtt.subscribe(bot)
 
             async def on_battery(event: BatteryEvent):

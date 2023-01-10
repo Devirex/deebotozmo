@@ -5,6 +5,7 @@ from cryptography.fernet import Fernet
 import cryptography
 import debugpy
 import aiohttp
+import logging
 from aiohttp import ClientError
 from deebotozmo.ecovacs_api import EcovacsAPI
 from deebotozmo.commands import (Charge, Clean, CleanArea, GetCachedMapInfo, GetStats, GetPos, GetCleanLogs, GetCleanInfo, GetMajorMap)
@@ -16,6 +17,7 @@ from deebotozmo.commands.clean import CleanAction, CleanMode
 import random
 import string
 
+logger = logging.getLogger(__name__)
 
 
 from .. import fhem

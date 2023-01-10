@@ -11,7 +11,7 @@ from deebotozmo.ecovacs_api import EcovacsAPI
 from deebotozmo.commands import (Charge, Clean, CleanArea, GetCachedMapInfo, GetStats, GetPos, GetCleanLogs, GetCleanInfo, GetMajorMap)
 from deebotozmo.ecovacs_mqtt import EcovacsMqtt
 from deebotozmo.events import (BatteryEvent, MapEvent, StatsEvent, StatusEvent, RoomsEvent, CleanLogEvent, WaterInfoEvent, CustomCommandEvent)
-from deebotozmo.vacuum_bot import VacuumBot
+from deebotozmo.vacuum_bot import VacuumBot, VacuumState
 from deebotozmo.util import md5
 from deebotozmo.commands.clean import CleanAction, CleanMode
 import random
@@ -166,11 +166,24 @@ class deebotozmofhem(generic.FhemModule):
             pass
 
         async def on_stats(event: StatsEvent):
+
             await fhem.readingsSingleUpdate(self.hash, "StatsEvent" , "StatsEvent" , 1)
 
         
         async def on_status(event: StatusEvent):
-            await fhem.readingsSingleUpdate(self.hash, "StatusEvent" , "StatusEvent", 1)
+            if event.state == VacuumState.CLEANING:
+                status = "Reinigung"
+            elif event.state == VacuumState.IDLE:
+                status = "Leerlauf"
+            elif event.state == VacuumState.RETURNING:
+                status = "Zurückkehren"
+            elif event.state == VacuumState.DOCKED:
+                status = "Laden"
+            elif event.state == VacuumState.ERROR:
+                status = "Fehler"
+            elif event.state == VacuumState.PAUSED:
+                status = "Pause"
+            await fhem.readingsSingleUpdate(self.hash, "Status" , status, 1)
         
 
         async def on_water(event: WaterInfoEvent):

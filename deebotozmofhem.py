@@ -72,6 +72,7 @@ class deebotozmofhem(generic.FhemModule):
         # }
         set_config = { 
             "bot": {
+                "options": "login,clean",
                 "login": {
                     "args": ["username", "password"],
                     "params": {
@@ -81,6 +82,14 @@ class deebotozmofhem(generic.FhemModule):
                 }
             },
             "bot2": {
+                 "options": "login,clean",
+                "login": {
+                    "args": ["username", "password"],
+                    "params": {
+                        "username": {"default":"username", "format": "string"},
+                        "password": {"default":"password", "format": "string"}   
+                    }
+                }
             }
         }
 

@@ -167,7 +167,7 @@ class deebotozmofhem(generic.FhemModule):
         deviceInfo = ""
         auth = await api.get_request_auth()
         for idx, device in enumerate(devices_):
-            self.bot[idx] = VacuumBot(self.session, auth, devices_[idx], continent=continent, country=country, verify_ssl=False)
+            self.bot[idx] = VacuumBot(self.session, auth, device, continent=continent, country=country, verify_ssl=False)
             deviceInfo += "ID: " + str(idx) + ", Name:" + device.nick + ", Devicename: " + device.device_name + "\n"
         await fhem.readingsSingleUpdate(self.hash, "deviceInfo", deviceInfo , 1)
 

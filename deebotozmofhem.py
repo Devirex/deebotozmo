@@ -227,7 +227,7 @@ class deebotozmofhem(generic.FhemModule):
     async def set_clean(self, hash, params):
         await self.bot.execute_command(Clean(CleanAction.START))
 
-    async def set_clean_spot_area(self, hash, params):
+    async def set_clean_spot_areas(self, hash, params):
         await self.bot.execute_command(CleanArea(CleanMode.SPOT_AREA, params['areas'] , self._attr_cleanings))
 
     async def set_clean_custom_area(self, hash, params):

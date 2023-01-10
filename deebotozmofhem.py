@@ -52,10 +52,9 @@ class deebotozmofhem(generic.FhemModule):
         self.set_attr_config(attr_config)
 
         set_config = {
-            "login": {
-                "args": ["username", "password"],
+            "password": {
+                "args": ["password"],
                 "params": {
-                    "username": {"default":"username", "format": "string"},
                     "password": {"default":"password", "format": "string"}   
                 }
             },

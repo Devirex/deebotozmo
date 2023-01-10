@@ -37,6 +37,11 @@ class deebotozmofhem(generic.FhemModule):
                 "default": "0",
                 "format": "string",
                 "help": "ID of the Bot",
+            },
+            "areas":{
+                "default": "0,Kaffee,-4849.000000,-1569.000000,-3548.000000,-2373.000000",
+                "format": "string",
+                "help": "Custom Areas in Format ID,Name,x1,y1,x2,y2",
             }
         }
         self.set_attr_config(attr_config)

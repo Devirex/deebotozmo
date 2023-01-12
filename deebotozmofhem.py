@@ -109,12 +109,16 @@ class deebotozmofhem(generic.FhemModule):
 
     async def read_password(self, hash):
         # no params argument here, as set_off doesn't have arguments defined in set_list_conf
-        with open(hash['NAME'] + ".pw", 'rb') as file_object:
-            for line in file_object:
-                encryptedpwd = line
-        uncipher_text = (self.cipher_suite.decrypt(encryptedpwd))
-        password = bytes(uncipher_text).decode("utf-8") #convert to string
-        return password          
+        try:
+            with open(hash['NAME'] + ".pw", 'rb') as file_object:
+                for line in file_object:
+                    encryptedpwd = line
+            uncipher_text = (self.cipher_suite.decrypt(encryptedpwd))
+            password = bytes(uncipher_text).decode("utf-8") #convert to string
+            return password
+        except FileNotFoundError as e:
+            await fhem.readingsSingleUpdate(hash, "state", "No Password-file found, please set password" 1)
+        return          
         
     async def setup_deebotozmo(self):
         email = self.username

@@ -95,13 +95,16 @@ class deebotozmofhem(generic.FhemModule):
         try: 
             self.username = self.hash['username']
             if self.username == "null":
+                await fhem.readingsSingleUpdate(hash, "state", "Unable to read username. define [name] fhempy deebotozmofhem [username]",1)
                 return "Unable to read username. define [name] fhempy deebotozmofhem [username]"
             pw = await self.read_password(hash)
             if pw == "null":
+                await fhem.readingsSingleUpdate(hash, "state", "Unable to read stored password. Set password again!",1)
                 return "Unable to read stored password. Set password again!"
             self.pw = md5(pw) 
             self.create_async_task(self.setup_deebotozmo())
         except (cryptography.fernet.InvalidToken):
+             await fhem.readingsSingleUpdate(hash, "state", "Unable to read stored password. Set password again!",1)
              return "Unable to read stored password. Set password again!"
 
     async def write_password(self, hash, password):

@@ -117,8 +117,8 @@ class deebotozmofhem(generic.FhemModule):
             password = bytes(uncipher_text).decode("utf-8") #convert to string
             return password
         except FileNotFoundError as e:
-            await fhem.readingsSingleUpdate(hash, "state", "No Password-file found, please set password" 1)
-        return          
+            await fhem.readingsSingleUpdate(hash, "state", "No Password-file found, please set password", 1)
+            return          
         
     async def setup_deebotozmo(self):
         email = self.username

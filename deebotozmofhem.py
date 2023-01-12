@@ -228,6 +228,9 @@ class deebotozmofhem(generic.FhemModule):
                 "params":  { "areas" : { "default" : "0", "foramat": "string"}}
             },
             "charge":{},
+            "pause":{},
+            "resume":{},
+            "stop":{},
             "map":{}
         })
         
@@ -250,6 +253,15 @@ class deebotozmofhem(generic.FhemModule):
 
     async def set_charge(self, hash, params):
         await self.bot.execute_command(Charge())
+
+    async def set_pause(self, hash, params):
+        await self.bot.execute_command(Clean(CleanAction.PAUSE))
+
+    async def set_resume(self, hash, params):
+        await self.bot.execute_command(Clean(CleanAction.RESUME))
+
+    async def set_stop(self, hash, params):
+        await self.bot.execute_command(Clean(CleanAction.STOP))
 
     async def set_map(self, hash, params):
         self.create_async_task(self.display_loop())

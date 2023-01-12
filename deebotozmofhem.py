@@ -96,9 +96,10 @@ class deebotozmofhem(generic.FhemModule):
             self.username = self.hash['username']
             if self.username == "null":
                 return "Unable to read username. define [name] fhempy deebotozmofhem [username]"
-            self.pw = md5(await self.read_password(hash))
-            if self.pw == "null":
-                return "Unable to read stored password. Set password again!"
+            pw = await self.read_password(hash)
+            if not pw:
+               return "Unable to read stored password. Set password again!"
+            self.pw = md5(pw ) 
             self.create_async_task(self.setup_deebotozmo())
         except (cryptography.fernet.InvalidToken):
              return "Unable to read stored password. Set password again!"

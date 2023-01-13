@@ -78,10 +78,13 @@ class deebotozmofhem(generic.FhemModule):
         self.hash['username'] = args[3]
         await fhem.readingsBeginUpdate(hash)
         await fhem.readingsBulkUpdateIfChanged(hash, "state", "on")
+        await fhem.readingsBulkUpdateIfChanged(hash, "cleanings", self._attr_cleanings)
         await fhem.readingsEndUpdate(hash, 1)
+        if self._attr_debug == "on":
+            debugpy.listen(("192.168.1.50",1108))
         if self._attr_autoconnect == "on":
             await self.set_connect(hash, '')
-            debugpy.listen(("192.168.1.50",1108))
+        
 
 
     async def set_password(self, hash, params):

@@ -8,9 +8,9 @@ import aiohttp
 import logging
 from aiohttp import ClientError
 from deebotozmo.ecovacs_api import EcovacsAPI
-from deebotozmo.commands import (Charge, Clean, CleanArea, GetCachedMapInfo, GetStats, GetPos, GetCleanLogs, GetCleanInfo, GetMajorMap)
+from deebotozmo.commands import (Charge, Clean, CleanArea, FanSpeedLevel, SetFanSpeed, GetCachedMapInfo, GetStats, GetPos, GetCleanLogs, GetCleanInfo, GetMajorMap)
 from deebotozmo.ecovacs_mqtt import EcovacsMqtt
-from deebotozmo.events import (BatteryEvent, MapEvent, StatsEvent, StatusEvent, RoomsEvent, CleanLogEvent, WaterInfoEvent, CustomCommandEvent)
+from deebotozmo.events import (BatteryEvent, MapEvent, FanSpeedEvent, StatsEvent, StatusEvent, RoomsEvent, CleanLogEvent, WaterInfoEvent, CustomCommandEvent)
 from deebotozmo.vacuum_bot import VacuumBot, VacuumState
 from deebotozmo.util import md5
 from deebotozmo.commands.clean import CleanAction, CleanMode
@@ -212,6 +212,9 @@ class deebotozmofhem(generic.FhemModule):
 
         async def on_cleanLog(event: CleanLogEvent):
             await fhem.readingsSingleUpdate(self.hash, "CleanLogEvent" , "CleanLogEvent", 1)
+        
+        async def on_fan_speed(event: FanSpeedEvent):
+            await fhem.readingsSingleUpdate(self.hash, "FanSpeed" , event.speed , 1)
 
         async def on_rooms(event: RoomsEvent):
             RoomInfo = ""
@@ -225,6 +228,7 @@ class deebotozmofhem(generic.FhemModule):
         self.bot.events.status.subscribe(on_status)
         self.bot.events.water_info.subscribe(on_water)
         self.bot.events.clean_logs.subscribe(on_cleanLog)
+        self.bot.events.fan_speed.subscribe(on_fan_speed)
         self.bot.events.rooms.subscribe(on_rooms)
         self.bot.events.map.request_refresh()
         self._conf_set.update({
@@ -240,6 +244,10 @@ class deebotozmofhem(generic.FhemModule):
             "cleanings":{
                 "args": ["cleanings"],
                 "options": "1,2"
+            },
+            "fanspeed":{
+                "args": ["fan"],
+                "options": "quiet,normal,max,max+"
             },
             "charge":{},
             "pause":{},
@@ -283,6 +291,16 @@ class deebotozmofhem(generic.FhemModule):
 
     async def set_map(self, hash, params):
         self.create_async_task(self.display_loop())
+
+    async def set_fanspeed(self, hash, params):
+        if(params['fan'] == "quiet"):
+            await self.bot.execute_command(SetFanSpeed(FanSpeedLevel.QUIET))
+        elif(params['fan'] == "normal"):
+            await self.bot.execute_command(SetFanSpeed(FanSpeedLevel.NORMAL))
+        elif(params['fan'] == "max"):
+            await self.bot.execute_command(SetFanSpeed(FanSpeedLevel.MAX))
+        elif(params['fan'] == "max+"):
+            await self.bot.execute_command(SetFanSpeed(FanSpeedLevel.MAX_PLUS))
 
     async def display_loop(self):
         while True:

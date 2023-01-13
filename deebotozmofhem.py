@@ -237,6 +237,7 @@ class deebotozmofhem(generic.FhemModule):
                 "args": ["areas"],
                 "params":  { "areas" : { "default" : "0", "foramat": "string"}}
             },
+            "cleanings":{},
             "charge":{},
             "pause":{},
             "resume":{},

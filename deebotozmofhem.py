@@ -38,6 +38,11 @@ class deebotozmofhem(generic.FhemModule):
                 "format": "string",
                 "help": "ID of the Bot",
             },
+            "debug": {
+                "default": "off",
+                "format": "string",
+                "help": "debug",
+            },
             "areas":{
                 "default": "0,Kaffee,-4849.000000,-1569.000000,-3548.000000,-2373.000000;",
                 "format": "string",

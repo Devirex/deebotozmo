@@ -254,7 +254,7 @@ class deebotozmofhem(generic.FhemModule):
         await self.bot.execute_command(Clean(CleanAction.START))
     
     async def set_cleanings(self, hash, params):
-        self.cleanings = int(params.cleanings)
+        self.cleanings = int(params['cleanings'])
         await fhem.readingsSingleUpdate(hash, "cleanings", self.cleanings, 1)
 
     async def set_clean_spot_areas(self, hash, params):

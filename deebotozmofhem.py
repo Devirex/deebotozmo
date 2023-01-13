@@ -71,7 +71,7 @@ class deebotozmofhem(generic.FhemModule):
             "connect":{}
         }
         self.set_set_config(set_config)
-        self.cleanings = self._attr_cleanings
+        self.cleanings = 0
         self.session = None
         self.cipher_suite = Fernet(base64.urlsafe_b64encode(uuid.UUID(int=uuid.getnode()).bytes * 2))
         
@@ -82,6 +82,7 @@ class deebotozmofhem(generic.FhemModule):
         if len(args) != 4:
             return "Usage: define vacuumcleaner fhempy deebotozmo username"
         self.hash['username'] = args[3]
+        self.cleanings = self._attr_cleanings
         await fhem.readingsBeginUpdate(hash)
         await fhem.readingsBulkUpdateIfChanged(hash, "state", "on")
         await fhem.readingsBulkUpdateIfChanged(hash, "cleanings", self.cleanings)

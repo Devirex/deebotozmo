@@ -294,13 +294,13 @@ class deebotozmofhem(generic.FhemModule):
 
     async def set_fanspeed(self, hash, params):
         if(params['fan'] == "quiet"):
-            await self.bot.execute_command(SetFanSpeed(FanSpeedLevel.QUIET))
+           await self.bot.execute_command(SetFanSpeed(1000))
         elif(params['fan'] == "normal"):
-            await self.bot.execute_command(SetFanSpeed(FanSpeedLevel.NORMAL))
+           await self.bot.execute_command(SetFanSpeed(0))
         elif(params['fan'] == "max"):
-            await self.bot.execute_command(SetFanSpeed(FanSpeedLevel.MAX))
+           await self.bot.execute_command(SetFanSpeed(1))
         elif(params['fan'] == "max+"):
-            await self.bot.execute_command(SetFanSpeed(FanSpeedLevel.MAX_PLUS))
+           await self.bot.execute_command(SetFanSpeed(2))
 
     async def display_loop(self):
         while True:

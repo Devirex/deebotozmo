@@ -71,6 +71,7 @@ class deebotozmofhem(generic.FhemModule):
             "connect":{}
         }
         self.set_set_config(set_config)
+        self.cleanings = self._attr_cleanings
         self.session = None
         self.cipher_suite = Fernet(base64.urlsafe_b64encode(uuid.UUID(int=uuid.getnode()).bytes * 2))
         
@@ -83,7 +84,7 @@ class deebotozmofhem(generic.FhemModule):
         self.hash['username'] = args[3]
         await fhem.readingsBeginUpdate(hash)
         await fhem.readingsBulkUpdateIfChanged(hash, "state", "on")
-        await fhem.readingsBulkUpdateIfChanged(hash, "cleanings", self._attr_cleanings)
+        await fhem.readingsBulkUpdateIfChanged(hash, "cleanings", self.cleanings)
         await fhem.readingsEndUpdate(hash, 1)
         if self._attr_debug == "on":
             debugpy.listen(("192.168.1.50",1108))
@@ -246,9 +247,13 @@ class deebotozmofhem(generic.FhemModule):
            
     async def set_clean(self, hash, params):
         await self.bot.execute_command(Clean(CleanAction.START))
+    
+    async def set_cleanings(self, hash, params):
+        self.cleanings = int(params)
+        await fhem.readingsSingleUpdate(hash, "cleanings", self.cleanings, 1)
 
     async def set_clean_spot_areas(self, hash, params):
-        await self.bot.execute_command(CleanArea(CleanMode.SPOT_AREA, params['areas'] , self._attr_cleanings))
+        await self.bot.execute_command(CleanArea(CleanMode.SPOT_AREA, params['areas'] , self.cleanings))
 
     async def set_clean_custom_area(self, hash, params):
         id = int(params['area'])
@@ -257,7 +262,7 @@ class deebotozmofhem(generic.FhemModule):
             if area:
                 areaValues = area.split(',')
                 if int(areaValues[0]) == id:
-                    await self.bot.execute_command(CleanArea(CleanMode.CUSTOM_AREA, areaValues[2] + "," + areaValues[3] + "," + areaValues[4] + "," +areaValues[5], self._attr_cleanings))
+                    await self.bot.execute_command(CleanArea(CleanMode.CUSTOM_AREA, areaValues[2] + "," + areaValues[3] + "," + areaValues[4] + "," +areaValues[5], self.cleanings))
 
     async def set_charge(self, hash, params):
         await self.bot.execute_command(Charge())
